@@ -1,22 +1,30 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AQTapDemo", "AQTapDemo.csproj", "{179AD7DF-4343-4F6E-9875-C38469F3787E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|iPhoneSimulator = Debug|iPhoneSimulator
-		Release|iPhoneSimulator = Release|iPhoneSimulator
-		Debug|iPhone = Debug|iPhone
-		Release|iPhone = Release|iPhone
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		Ad-Hoc|iPhoneSimulator = Ad-Hoc|iPhoneSimulator
 		AppStore|iPhone = AppStore|iPhone
+		AppStore|iPhoneSimulator = AppStore|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Ad-Hoc|iPhoneSimulator
+		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Ad-Hoc|iPhoneSimulator.Build.0 = Ad-Hoc|iPhoneSimulator
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{179AD7DF-4343-4F6E-9875-C38469F3787E}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
+		{179AD7DF-4343-4F6E-9875-C38469F3787E}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Debug|iPhone.Build.0 = Debug|iPhone
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -25,6 +33,9 @@ Global
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Release|iPhone.Build.0 = Release|iPhone
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{179AD7DF-4343-4F6E-9875-C38469F3787E}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = AQTapDemo\AQTapDemo.csproj
