@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using CoreLocation;
+using Foundation;
+using UIKit;
 
 namespace AirLocate {
 
@@ -86,7 +86,8 @@ namespace AirLocate {
 			return -1;
 		}
 
-		public override int NumberOfSections (UITableView tableView)
+        // TODO: Changed return type of overridden method from int to nint
+		public override nint NumberOfSections (UITableView tableView)
 		{
 			//  return Unknown + Immediate + Near + Far if any beacon in each
 			int sections = 0;
@@ -99,20 +100,24 @@ namespace AirLocate {
 			return sections;
 		}
 
-		public override int RowsInSection (UITableView tableview, int section)
+        // TODO: Changed return type of overriden method from int to nint
+        // TODO: Changed parameter in overridden method from int to nint
+		public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			if (inProgress && (section == 0))
 				return 	1;
-			return beacons [GetNonEmptySection (section)].Count;
+            // TODO: Cast nint to int being used as method parameter
+			return beacons [GetNonEmptySection ((int)section)].Count;
 		}
 
-		public override string TitleForHeader (UITableView tableView, int section)
+        // TODO: Changed paramater in overridden method from int to nint
+		public override string TitleForHeader (UITableView tableView, nint section)
 		{
 			// the first section has no title when the progress bar is shown
 			if (((section == 0) && inProgress) || (NumberOfSections (tableView) == 0))
 				return null;
-
-			return ((CLProximity) GetNonEmptySection (section)).ToString ();
+            // TODO: Cast nint to int being used as method parameter
+			return ((CLProximity) GetNonEmptySection ((int)section)).ToString ();
 		}
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
@@ -127,14 +132,17 @@ namespace AirLocate {
 					cell = new UITableViewCell (UITableViewCellStyle.Default, identifier) {
 						SelectionStyle = UITableViewCellSelectionStyle.None
 					};
-				
-					progressBar.Center = new PointF (cell.Center.X, 17.0f);
+				    
+                    // TODO: Changed new PointF to new CGPoint
+					progressBar.Center = new CGPoint (cell.Center.X, 17.0f);
 					cell.ContentView.AddSubview (progressBar);
-				
-					UILabel label = new UILabel (new RectangleF (0.0f, 0.0f, 300.0f, 15.0f)) {
+				    
+                    // TODO: Changed new RectangleF to new CGRect
+					UILabel label = new UILabel (new CGRect (0.0f, 0.0f, 300.0f, 15.0f)) {
 						AutoresizingMask = UIViewAutoresizing.FlexibleMargins,
 						BackgroundColor = UIColor.Clear,
-						Center = new PointF (cell.Center.X, 30.0f),
+                        // TODO: Changed new PointF to new CGPoint
+						Center = new CGPoint (cell.Center.X, 30.0f),
 						Font = UIFont.SystemFontOfSize (11.0f),
 						Text = "Wave device side-to-side 1m away from beacon",
 						TextAlignment = UITextAlignment.Center,

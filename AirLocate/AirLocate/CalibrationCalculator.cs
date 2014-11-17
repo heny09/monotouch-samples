@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using MonoTouch.CoreFoundation;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
+using CoreFoundation;
+using CoreLocation;
+using Foundation;
 
 namespace AirLocate {
 
@@ -79,10 +79,12 @@ namespace AirLocate {
 				ProgressHandler = handler;
 
 				locationManager.StartRangingBeacons (region);
-				timer = NSTimer.CreateTimer (20.0f, new NSAction (delegate {
+                // TODO: Changed NSAction in NSTimer.CreateTimer to Action<NSTimer>
+				timer = NSTimer.CreateTimer (20.0f, (actionTimer) => {
 					locationManager.StopRangingBeacons (region);
 
-					DispatchQueue.DefaultGlobalQueue.DispatchAsync (new NSAction (delegate {
+                    // TODO: Changed NSAction in DispatchQueue.DefaultGLobalQueue.DispatchAsync to Action
+					DispatchQueue.DefaultGlobalQueue.DispatchAsync (() => {
 						NSError error = null;
 						List<CLBeacon> allBeacons = new List<CLBeacon> ();
 						int measuredPower = 0;
@@ -124,8 +126,8 @@ namespace AirLocate {
 
 						isCalibrating = false;
 						rangedBeacons.Clear ();
-					}));
-				}));
+					});
+				});
 				NSRunLoop.Current.AddTimer (timer, NSRunLoopMode.Default);
 			}
 		}

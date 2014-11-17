@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreLocation;
+using Foundation;
+using UIKit;
 
 namespace AirLocate {
 
@@ -60,7 +60,8 @@ namespace AirLocate {
 				locationManager.StopRangingBeacons (region);
 		}
 
-		public override int NumberOfSections (UITableView tableView)
+        // TODO: Changed return type of overridden method from int to nint
+		public override nint NumberOfSections (UITableView tableView)
 		{
 			// skip empty groups
 			int sections = 0;
@@ -85,17 +86,22 @@ namespace AirLocate {
 			return -1;
 		}
 
-		public override int RowsInSection (UITableView tableview, int section)
+        // TODO: Changed return type of overriden method from int to nint
+        // TODO: Changed parameter in overridden method from int to nint
+		public override nint RowsInSection (UITableView tableview, nint section)
 		{
-			return beacons [GetNonEmptySection (section)].Count;
+            // TODO: Cast nint to int for use as method parameter
+			return beacons [GetNonEmptySection ((int)section)].Count;
 		}
 
-		public override string TitleForHeader (UITableView tableView, int section)
+        // TODO: Changed parameter in overridden method from int to nint
+		public override string TitleForHeader (UITableView tableView, nint section)
 		{
 			if (NumberOfSections (tableView) == 0)
 				return null;
 
-			return ((CLProximity) GetNonEmptySection (section)).ToString ();
+            // TODO: Cast nint to int for use as method parameter
+			return ((CLProximity) GetNonEmptySection ((int)section)).ToString ();
 		}
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
