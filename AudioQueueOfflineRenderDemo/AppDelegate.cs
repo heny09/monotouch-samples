@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-using MonoTouch;
-using MonoTouch.AVFoundation;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using ObjCRuntime;
+using AVFoundation;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
-using MonoTouch.AudioToolbox;
-using MonoTouch.AudioUnit;
+using AudioToolbox;
+using AudioUnit;
 
-using MonoTouch.CoreFoundation;
+using CoreFoundation;
 
 using AudioFileID = System.IntPtr;
 
@@ -45,6 +45,7 @@ namespace AudioQueueOfflineRenderDemo
 		
 		void SetCaption (string caption)
 		{
+            // TODO: Removed (Action) cast added by migration tool
 			BeginInvokeOnMainThread (() =>
 			{
 				element.Caption = caption;
@@ -70,6 +71,7 @@ namespace AudioQueueOfflineRenderDemo
 				} catch (Exception ex) {
 					Console.WriteLine (ex);
 				}
+                // TODO: Removed (Action) cast added by migration tool
 				BeginInvokeOnMainThread (() =>
 				{
 					SetCaption ("Playing...");
@@ -157,7 +159,8 @@ namespace AudioQueueOfflineRenderDemo
 			using (var audioFile = AudioFile.Open (sourceUrl, AudioFilePermission.Read, (AudioFileType) 0)) {
 				dataFormat = audioFile.StreamBasicDescription;
 				
-				using (var queue = new OutputAudioQueue (dataFormat, CFRunLoop.Current, CFRunLoop.CFRunLoopCommonModes)) {
+                // TODO: Changed CFRunLoop.CFRunLoopCommonModes to CFRunLoop.ModeCommon
+				using (var queue = new OutputAudioQueue (dataFormat, CFRunLoop.Current, CFRunLoop.ModeCommon)) {
 					queue.OutputCompleted += (sender, e) => 
 					{
 						HandleOutput (audioFile, queue, buffer, ref packetsToRead, ref currentPacket, ref done, ref flushed, ref packetDescs);
@@ -232,8 +235,8 @@ namespace AudioQueueOfflineRenderDemo
 							
 							ts += writeFrames;
 						}
-					
-						CFRunLoop.Current.RunInMode (CFRunLoop.CFDefaultRunLoopMode, 1, false);
+					    // TODO: Changed CFRunLoop.CFDefaultRunLoopMode to CFRunLoop.ModeDefault
+						CFRunLoop.Current.RunInMode (CFRunLoop.ModeDefault, 1, false);
 					}
 				}
 			}
