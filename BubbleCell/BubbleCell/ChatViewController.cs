@@ -11,9 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Dialog;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
+using Foundation;
+using UIKit;
+using CoreGraphics;
 
 namespace BubbleCell
 {
@@ -50,7 +50,7 @@ namespace BubbleCell
 			//
 			// Add the bubble chat interface
 			//
-			discussionHost = new UIView (new RectangleF (bounds.X, bounds.Y, bounds.Width, bounds.Height-entryHeight)) {
+			discussionHost = new UIView (new CGRect (bounds.X, bounds.Y, bounds.Width, bounds.Height-entryHeight)) {
 				AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth,
 				AutosizesSubviews = true,
 				UserInteractionEnabled = true
@@ -64,21 +64,21 @@ namespace BubbleCell
 			// 
 			// Add styled entry
 			//
-			chatBar = new UIImageView (new RectangleF (0, bounds.Height-entryHeight, bounds.Width, entryHeight)) {
+			chatBar = new UIImageView (new CGRect (0, bounds.Height-entryHeight, bounds.Width, entryHeight)) {
 				ClearsContextBeforeDrawing = false,
 				AutoresizingMask = UIViewAutoresizing.FlexibleTopMargin | UIViewAutoresizing.FlexibleWidth,
-				Image = UIImage.FromFile ("ChatBar.png").StretchableImage (18, 20),
+				Image = (UIImage)UIImage.FromFile ("ChatBar.png").StretchableImage ((nint)18, (nint)20),
 				UserInteractionEnabled = true
 			};
 			View.AddSubview (chatBar);
 			
-			entry = new UITextView (new RectangleF (10, 9, 234, 22)) {
-				ContentSize = new SizeF (234, 22),
+			entry = new UITextView (new CGRect (10, 9, 234, 22)) {
+				ContentSize = new CGSize (234, 22),
 				AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight,
 				ScrollEnabled = true,
 				ScrollIndicatorInsets = new UIEdgeInsets (5, 0, 4, -2),
 				ClearsContextBeforeDrawing = false,
-				Font = UIFont.SystemFontOfSize (messageFontSize),
+				Font = (UIFont)UIFont.SystemFontOfSize ((nfloat)messageFontSize),
 				DataDetectorTypes = UIDataDetectorType.All,
 				BackgroundColor = UIColor.Clear,
 			};
@@ -88,7 +88,8 @@ namespace BubbleCell
 				entry.ContentInset = new UIEdgeInsets (0, 0, 3, 0);
 				return true;
 			};
-			previousContentHeight = entry.ContentSize.Height;
+            // TODO: cast nfloat to float
+			previousContentHeight = (float)entry.ContentSize.Height;
 			chatBar.AddSubview (entry);
 			
 			// 
@@ -96,14 +97,14 @@ namespace BubbleCell
 			//
 			sendButton = UIButton.FromType (UIButtonType.Custom);
 			sendButton.ClearsContextBeforeDrawing = false;
-			sendButton.Frame = new RectangleF (chatBar.Frame.Width - 70, 8, 64, 26);
+			sendButton.Frame = new CGRect (chatBar.Frame.Width - 70, 8, 64, 26);
 			sendButton.AutoresizingMask = UIViewAutoresizing.FlexibleTopMargin | UIViewAutoresizing.FlexibleLeftMargin;
 			
 			var sendBackground = UIImage.FromFile ("SendButton.png");
 			sendButton.SetBackgroundImage (sendBackground, UIControlState.Normal);
 			sendButton.SetBackgroundImage (sendBackground, UIControlState.Disabled);
-			sendButton.TitleLabel.Font = UIFont.BoldSystemFontOfSize (16);
-			sendButton.TitleLabel.ShadowOffset = new SizeF (0, -1);
+			sendButton.TitleLabel.Font = (UIFont)UIFont.BoldSystemFontOfSize ((nfloat)16);
+			sendButton.TitleLabel.ShadowOffset = new CGSize (0, -1);
 			sendButton.SetTitle ("Send", UIControlState.Normal);
 			sendButton.SetTitleShadowColor (new UIColor (0.325f, 0.463f, 0.675f, 1), UIControlState.Normal);
 			sendButton.AddTarget (SendMessage, UIControlEvent.TouchUpInside);
@@ -166,13 +167,14 @@ namespace BubbleCell
 			if (entry.HasText){
 				if (contentHeight != previousContentHeight){
 					if (contentHeight <= maxContentHeight){
-						SetChatBarHeight (contentHeight + 18);
+                        // TODO: Cast nfloat to float
+						SetChatBarHeight ((float)contentHeight + 18);
 						if (previousContentHeight > maxContentHeight)
 							entry.ScrollEnabled = false;
-						entry.ContentOffset = new PointF (0, 6);
+						entry.ContentOffset = new CGPoint (0, 6);
 					} else if (previousContentHeight <= maxContentHeight){
 						entry.ScrollEnabled = true;
-						entry.ContentOffset = new PointF (0, contentHeight-68);
+						entry.ContentOffset = new CGPoint (0, contentHeight-68);
 						if (previousContentHeight < maxContentHeight){
 							ExpandChatBarHeight ();
 						}
@@ -191,7 +193,8 @@ namespace BubbleCell
 			else
 				DisableSend ();
 			
-			previousContentHeight = contentHeight;
+            //TODO: Cast nfloat to float
+			previousContentHeight = (float)contentHeight;
 			
 		}
 		
@@ -205,7 +208,7 @@ namespace BubbleCell
 			UIView.BeginAnimations ("");
 			UIView.SetAnimationDuration (.3);
 			discussion.View.Frame = chatFrame;
-			chatBar.Frame = new RectangleF (chatBar.Frame.X, chatFrame.Height, chatFrame.Width, height);
+			chatBar.Frame = new CGRect (chatBar.Frame.X, chatFrame.Height, chatFrame.Width, height);
 			UIView.CommitAnimations ();
 		}
 		
@@ -225,7 +228,7 @@ namespace BubbleCell
 		void AdjustEntry ()
 		{
 			// This fixes a rendering glitch
-			entry.ContentOffset = new PointF (0, 6);
+			entry.ContentOffset = new CGPoint (0, 6);
 		}
 		
 		// 
@@ -247,7 +250,7 @@ namespace BubbleCell
 				UIView.SetAnimationCurve (args.AnimationCurve);
 				UIView.SetAnimationDuration (args.AnimationDuration);
 				var viewFrame = View.Frame;
-				var endRelative = View.ConvertRectFromView (args.FrameEnd, null);
+				var endRelative = (CGRect)View.ConvertRectFromView ((CGRect)args.FrameEnd, (UIView)null);
 				viewFrame.Height = endRelative.Y;
 				View.Frame = viewFrame;
 			} UIView.CommitAnimations ();
@@ -261,7 +264,7 @@ namespace BubbleCell
 			int row = discussion.Root [0].Elements.Count-1;
 			if (row == -1)
 				return;
-			discussion.TableView.ScrollToRow (NSIndexPath.FromRowSection (row, 0), UITableViewScrollPosition.Bottom, true);
+			discussion.TableView.ScrollToRow ((NSIndexPath)NSIndexPath.FromRowSection ((nint)row, (nint)0), UITableViewScrollPosition.Bottom, true);
 		}
 		
 		public override bool AutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers {

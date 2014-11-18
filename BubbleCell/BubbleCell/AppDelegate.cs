@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Dialog;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.MapKit;
+using Foundation;
+using UIKit;
+using CoreGraphics;
+using MapKit;
 
 namespace BubbleCell {
 	
@@ -60,7 +60,7 @@ namespace BubbleCell {
 				if (login.Value == "Root" && pass.Value == "Root"){
 					NSUserDefaults.StandardUserDefaults.SetBool (true, "loggedIn");
 					
-					window.RootViewController.PresentViewController (MakeOptions (), true, delegate {});
+					window.RootViewController.PresentViewController ((UIViewController)MakeOptions (), true, (Action)delegate {});
 				}
 			});
 			
