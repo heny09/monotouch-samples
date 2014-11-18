@@ -1,6 +1,6 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using System.Threading;
 
 namespace Example_BackgroundExecution
@@ -64,7 +64,8 @@ namespace Example_BackgroundExecution
 			//UIApplication.SharedApplication.SetKeepAliveTimout(600, () => { /* keep alive handler code*/ });
 			
 			// register a long running task, and then start it on a new thread so that this method can return
-			int taskID = UIApplication.SharedApplication.BeginBackgroundTask ( () => {});
+            // TODO: Removed (Action) cast added by migration tool
+			int taskID = (int)UIApplication.SharedApplication.BeginBackgroundTask ( () => {});
 			Thread task = new Thread (new ThreadStart ( () => { FinishLongRunningTask(taskID);}));
 			task.Start ();
 		}
@@ -83,7 +84,7 @@ namespace Example_BackgroundExecution
 			Console.WriteLine ("Background time remaining: " + UIApplication.SharedApplication.BackgroundTimeRemaining.ToString ());
 			
 			// call our end task
-			UIApplication.SharedApplication.EndBackgroundTask (taskID);
+			UIApplication.SharedApplication.EndBackgroundTask ((nint)taskID);
 		}
 		
 		// [not guaranteed that this will run]
