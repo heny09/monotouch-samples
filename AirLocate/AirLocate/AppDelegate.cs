@@ -1,7 +1,7 @@
 using System;
-using CoreLocation;
-using Foundation;
-using UIKit;
+using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace AirLocate {
 
@@ -34,8 +34,7 @@ namespace AirLocate {
 
 					// If the application is in the foreground, it will get called back to ReceivedLocalNotification
 					// If its not, iOS will display the notification to the user.
-                    // TODO: Changed UIApplication.SharedApplication.PresentLocationNotificationNow to .PresentLocalNotificationNow
-					UIApplication.SharedApplication.PresentLocalNotificationNow (notification);
+					UIApplication.SharedApplication.PresentLocationNotificationNow (notification);
 				}
 			};
 		}

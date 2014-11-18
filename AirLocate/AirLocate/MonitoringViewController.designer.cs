@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using Foundation;
+using MonoTouch.Foundation;
 using System.CodeDom.Compiler;
 
 namespace AirLocate
@@ -14,31 +14,31 @@ namespace AirLocate
 	{
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UISwitch enabledSwitch { get; set; }
+		MonoTouch.UIKit.UISwitch enabledSwitch { get; set; }
 
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UITextField majorTextField { get; set; }
+		MonoTouch.UIKit.UITextField majorTextField { get; set; }
 
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UITextField minorTextField { get; set; }
+		MonoTouch.UIKit.UITextField minorTextField { get; set; }
 
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UISwitch notifyOnDisplaySwitch { get; set; }
+		MonoTouch.UIKit.UISwitch notifyOnDisplaySwitch { get; set; }
 
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UISwitch notifyOnEntrySwitch { get; set; }
+		MonoTouch.UIKit.UISwitch notifyOnEntrySwitch { get; set; }
 
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UISwitch notifyOnExitSwitch { get; set; }
+		MonoTouch.UIKit.UISwitch notifyOnExitSwitch { get; set; }
 
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		UIKit.UITextField uuidTextField { get; set; }
+		MonoTouch.UIKit.UITextField uuidTextField { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

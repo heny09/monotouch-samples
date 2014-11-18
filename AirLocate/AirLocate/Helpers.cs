@@ -1,6 +1,6 @@
 using System;
-using CoreLocation;
-using Foundation;
+using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
 
 namespace AirLocate {
 
