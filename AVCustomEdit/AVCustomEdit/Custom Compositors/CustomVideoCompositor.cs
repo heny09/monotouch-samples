@@ -1,12 +1,12 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.AVFoundation;
-using MonoTouch.CoreFoundation;
-using MonoTouch.CoreVideo;
-using MonoTouch.CoreMedia;
-using MonoTouch.CoreGraphics;
+using Foundation;
+using AVFoundation;
+using CoreFoundation;
+using CoreVideo;
+using CoreMedia;
+using CoreGraphics;
 
 namespace AVCustomEdit
 {
@@ -90,6 +90,7 @@ namespace AVCustomEdit
 
 		public override void RenderContextChanged (AVVideoCompositionRenderContext newRenderContext)
 		{
+            // TODO: Removed (Action) cast added by migration tool
 			renderContextQueue.DispatchSync (() => {
 				renderContext = newRenderContext;
 				renderContextDidChange = true;			
@@ -98,6 +99,7 @@ namespace AVCustomEdit
 
 		public override void StartVideoCompositionRequest (AVAsynchronousVideoCompositionRequest asyncVideoCompositionRequest)
 		{
+            // TODO: Removed (Action) cast added by migration tool
 			renderingQueue.DispatchAsync (() => {
 				if(shouldCancelAllRequests)
 					asyncVideoCompositionRequest.FinishCancelledRequest();
@@ -120,6 +122,7 @@ namespace AVCustomEdit
 		public override void CancelAllPendingVideoCompositionRequests ()
 		{
 			shouldCancelAllRequests = true;
+            // TODO: Removed (Action) cast added by migration tool
 			renderingQueue.DispatchAsync (() => {
 				shouldCancelAllRequests = false;
 			});
@@ -147,8 +150,9 @@ namespace AVCustomEdit
 			dstPixels = renderContext.CreatePixelBuffer ();
 
 			if (renderContextDidChange) {
+                // TODO: Replaced AVVideoCompositionRenderContext.CGSize with .Size (.CGSize may have been added by the migration tool)
 				var renderSize = renderContext.Size;
-				var destinationSize = new SizeF (dstPixels.Width, dstPixels.Height);
+				var destinationSize = new CGSize (dstPixels.Width, dstPixels.Height);
 				var renderContextTransform = new CGAffineTransform (renderSize.Width / 2, 0, 0, renderSize.Height / 2, renderSize.Width / 2, renderSize.Height / 2);
 				var destinationTransform = new CGAffineTransform (2 / destinationSize.Width, 0, 0, 2 / destinationSize.Height, -1, -1);
 				var normalizedRenderTransform = CGAffineTransform.Multiply( CGAffineTransform.Multiply(renderContextTransform, renderContext.RenderTransform), destinationTransform);

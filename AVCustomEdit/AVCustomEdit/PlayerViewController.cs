@@ -3,14 +3,14 @@
 using System;
 using System.Collections.Generic;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.AVFoundation;
-using MonoTouch.CoreFoundation;
-using MonoTouch.CoreMedia;
+using Foundation;
+using UIKit;
+using AVFoundation;
+using CoreFoundation;
+using CoreMedia;
 using System.Threading.Tasks;
 using System.IO;
-using MonoTouch.AssetsLibrary;
+using AssetsLibrary;
 
 namespace AVCustomEdit
 {
@@ -70,6 +70,7 @@ namespace AVCustomEdit
 			base.ViewDidLoad ();
 		
 			gestureRecognizer.ShouldReceiveTouch = ShouldReceiveTouch;
+            // TODO: Removed (Action) cast added by migration tool
 			gestureRecognizer.AddTarget (() => { HandleTapGesture (gestureRecognizer); });
 
 			Editor = new SimpleEditor ();
@@ -158,7 +159,7 @@ namespace AVCustomEdit
 
 			// Wait until both assets are loaded
 			dispatchGroup.Wait (DispatchTime.Forever);
-			InvokeOnMainThread(delegate{
+			InvokeOnMainThread((Action)delegate{
 				synchronizeWithEditor();
 			});
 			
@@ -167,6 +168,7 @@ namespace AVCustomEdit
 		void loadAsset(AVAsset asset, string[] assetKeysToLoad, DispatchGroup dispatchGroup)
 		{
 			dispatchGroup.Enter ();
+            // TODO: Removed (Action) cast added by migration tool
 			asset.LoadValuesAsynchronously (assetKeysToLoad, () => {
 				foreach(var key in assetKeysToLoad)
 				{
@@ -290,7 +292,8 @@ namespace AVCustomEdit
 			double duration = playerItemDuration;
 
 			if (!Double.IsInfinity (duration)) {
-				float width = scrubber.Bounds.Width;
+                //TODO: Cast nfloat to float
+                float width = (float)scrubber.Bounds.Width;
 				double interval = 0.5 * duration / width;
 
 				if (interval > 1.0)
@@ -390,6 +393,7 @@ namespace AVCustomEdit
 
 		void reportError(NSError error)
 		{
+            // TODO: Removed (Action) cast added by migration tool
 			DispatchQueue.MainQueue.DispatchAsync (() => {
 				if (error == null)
 					return;
@@ -498,12 +502,13 @@ namespace AVCustomEdit
 			session.OutputFileType = AVFileType.QuickTimeMovie;
 
 			session.ExportAsynchronously (() => {
+                // TODO: Removed (Action) cast added by migration tool
 				DispatchQueue.MainQueue.DispatchAsync (() => {
 					exportCompleted (session);
 				});
 			});
-
-			progressTimer = NSTimer.CreateRepeatingTimer (0.5, () => updateProgress (progressTimer));
+            // TODO: Replaced "(NSTimer>)() =>" added by migration tool with "(timer) =>"
+			progressTimer = (NSTimer)NSTimer.CreateRepeatingTimer (0.5, (timer) => updateProgress (progressTimer));
 			NSRunLoop.Current.AddTimer (progressTimer, NSRunLoopMode.Default);
 		}
 
@@ -556,7 +561,7 @@ namespace AVCustomEdit
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
 				Popover.Dismiss (true);
 			else
-				DismissViewController (true, null);
+				DismissViewController (true, (Action)null);
 		}
 	}
 }
