@@ -1,22 +1,28 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirLocate", "AirLocate\AirLocate.csproj", "{718D5D6E-871A-4A42-9867-3D1F0552B0F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|iPhoneSimulator = Debug|iPhoneSimulator
-		Release|iPhoneSimulator = Release|iPhoneSimulator
-		Debug|iPhone = Debug|iPhone
-		Release|iPhone = Release|iPhone
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		Ad-Hoc|iPhoneSimulator = Ad-Hoc|iPhoneSimulator
 		AppStore|iPhone = AppStore|iPhone
+		AppStore|iPhoneSimulator = AppStore|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Ad-Hoc|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Debug|iPhone.Build.0 = Debug|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -25,6 +31,9 @@ Global
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Release|iPhone.Build.0 = Release|iPhone
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{718D5D6E-871A-4A42-9867-3D1F0552B0F4}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = AirLocate\AirLocate.csproj
