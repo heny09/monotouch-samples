@@ -1,5 +1,5 @@
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using FontList.Code;
 using System.Collections.Generic;
 
@@ -39,7 +39,7 @@ namespace FontList.Screens.Universal.FontListing
 				{
 					// add an item of that font
 					fontName = UIFont.FontNamesForFamilyName (UIFont.FamilyNames[i])[j];
-					font = UIFont.FromName (fontName, UIFont.SystemFontSize);
+					font = (UIFont)UIFont.FromName (fontName, (nfloat)UIFont.SystemFontSize);
 					if((UIApplication.SharedApplication.Delegate as AppDelegate).CurrentDevice == DeviceType.iPad) { 
 						controller = typeof(Screens.iPad.FontViewer.FontViewerScreen_iPad); 
 					} else { 
