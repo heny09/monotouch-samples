@@ -1,12 +1,13 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 
 namespace Example_Drawing
 {
 	[Register("AppDelegate")]
 	public class AppDelegate : UIApplicationDelegate
 	{
+        // TODO: Replaced MonoTouch.Foundation. with Foundation. in designer.cs files
 		#region -= declarations and properties =-
 		
 		protected UIWindow window;

@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using System.Drawing;
-using MonoTouch.Foundation;
+using UIKit;
+using CoreGraphics;
+using CoreGraphics;
+using Foundation;
 
 namespace Example_Drawing.Screens.iPad.HitTesting
 {
@@ -18,15 +18,15 @@ namespace Example_Drawing.Screens.iPad.HitTesting
 		#endregion
 	
 		// rect changes depending on if the whole view is being redrawn, or just a section
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			Console.WriteLine ("Draw() Called");
-			base.Draw (rect);
+			base.Draw ((CGRect)rect);
 			
 			using (CGContext context = UIGraphics.GetCurrentContext ()) {
 				// draw a rectangle using a path
 				myRectangleButtonPath = new CGPath ();
-				myRectangleButtonPath.AddRect (new RectangleF (new PointF (100, 10), new SizeF (200, 400)));
+				myRectangleButtonPath.AddRect (new CGRect (new CGPoint (100, 10), new CGSize (200, 400)));
 				context.AddPath (myRectangleButtonPath);
 				context.DrawPath (CGPathDrawingMode.Stroke);
 			}
@@ -43,7 +43,7 @@ namespace Example_Drawing.Screens.iPad.HitTesting
 			// make sure there was one
 			if (touch != null) {
 				// check to see if the location of the touch was within our path
-				if (myRectangleButtonPath.ContainsPoint (touch.LocationInView (this), true))
+				if (myRectangleButtonPath.ContainsPoint ((CGPoint)touch.LocationInView ((UIView)this), true))
 					touchStartedInPath = true;
 			}
 		}
@@ -62,7 +62,7 @@ namespace Example_Drawing.Screens.iPad.HitTesting
 			if (touch != null) {
 				
 				// the point of touch
-				PointF pt = touch.LocationInView (this);
+				CGPoint pt = (CGPoint)touch.LocationInView ((UIView)this);
 				
 				// if the touch ended in the path AND it started in the path
 				if (myRectangleButtonPath.ContainsPoint (pt, true) && touchStartedInPath) {

@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
+using UIKit;
+using CoreGraphics;
+using CoreGraphics;
 
 namespace Example_Drawing.Screens.iPad.StencilPattern
 {
@@ -24,17 +24,17 @@ namespace Example_Drawing.Screens.iPad.StencilPattern
 			
 			// instantiate a new image view that takes up the whole screen and add it to 
 			// the view hierarchy
-			RectangleF imageViewFrame = new RectangleF (0, -NavigationController.NavigationBar.Frame.Height, View.Frame.Width, View.Frame.Height);
+			CGRect imageViewFrame = new CGRect (0, -NavigationController.NavigationBar.Frame.Height, View.Frame.Width, View.Frame.Height);
 			imageView = new UIImageView (imageViewFrame);
 			View.AddSubview (imageView);
 			
 			// create our offscreen bitmap context
 			// size
-			SizeF bitmapSize = new SizeF (View.Frame.Size);
+			CGSize bitmapSize = new CGSize (View.Frame.CGSize);
 			using (CGBitmapContext context = new CGBitmapContext (IntPtr.Zero, (int)bitmapSize.Width, (int)bitmapSize.Height, 8, (int)(4 * bitmapSize.Width), CGColorSpace.CreateDeviceRGB (), CGImageAlphaInfo.PremultipliedFirst)) {
 
 				// declare vars
-				RectangleF patternRect = new RectangleF (0, 0, 16, 16);
+				CGRect patternRect = new CGRect (0, 0, 16, 16);
 				
 				// set the color space of our fill to be the patter colorspace
 				context.SetFillColorSpace (CGColorSpace.CreatePattern (CGColorSpace.CreateDeviceRGB()));
@@ -50,7 +50,7 @@ namespace Example_Drawing.Screens.iPad.StencilPattern
 				context.FillRect (imageView.Frame);
 				
 				// output the drawing to the view
-				imageView.Image = UIImage.FromImage (context.ToImage ());
+				imageView.Image = (UIImage)UIImage.FromImage (context.ToImage ());
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace Example_Drawing.Screens.iPad.StencilPattern
 		/// </summary>
 		protected void DrawPolkaDotPattern (CGContext context)
 		{
-			context.FillEllipseInRect (new RectangleF (4, 4, 8, 8));
+			context.FillEllipseInRect (new CGRect (4, 4, 8, 8));
 		}
 		
 		/// <summary>
