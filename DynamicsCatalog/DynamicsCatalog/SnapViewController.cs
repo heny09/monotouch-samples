@@ -1,5 +1,6 @@
+using CoreGraphics;
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 
 namespace DynamicsCatalog {
 
@@ -17,7 +18,8 @@ namespace DynamicsCatalog {
 
 			View.AddGestureRecognizer (new UITapGestureRecognizer ((gesture) => {
 				Animator = new UIDynamicAnimator (View);
-				Animator.AddBehavior (new UISnapBehavior (square, gesture.LocationInView (View)));
+                // TODO: Added "using CoreGraphics" in order for (CGPoint) cast to work
+				Animator.AddBehavior (new UISnapBehavior (square, (CGPoint)gesture.LocationInView ((UIView)View)));
 			}));
 		}
 	}

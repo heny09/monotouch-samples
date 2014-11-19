@@ -1,6 +1,6 @@
 using System;
-using System.Drawing;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using UIKit;
 
 namespace DynamicsCatalog {
 
@@ -19,7 +19,7 @@ namespace DynamicsCatalog {
 			var collisionBehavior = new UICollisionBehavior (square);
 			collisionBehavior.TranslatesReferenceBoundsIntoBoundary = true;
 
-			var squareCenterPoint = new PointF (square.Center.X, square.Center.Y - 100);
+			var squareCenterPoint = new CGPoint (square.Center.X, square.Center.Y - 100);
 			var attachmentOffset = new UIOffset (-25.0f, -25.0f);
 
 			/*
@@ -31,13 +31,13 @@ namespace DynamicsCatalog {
 
 			// Show visually the attachment points
 			redSquare.Center = attachmentBehavior.AnchorPoint;
-			blueSquare.Center = new PointF (25.0f, 25.0f);
+			blueSquare.Center = new CGPoint (25.0f, 25.0f);
 
 			Animator = new UIDynamicAnimator (View);
 			Animator.AddBehavior (attachmentBehavior);
 
 			View.AddGestureRecognizer (new UIPanGestureRecognizer ((gesture) => {
-				attachmentBehavior.AnchorPoint = gesture.LocationInView (View);
+				attachmentBehavior.AnchorPoint = (CGPoint)gesture.LocationInView ((UIView)View);
 				redSquare.Center = attachmentBehavior.AnchorPoint;
 			}));
 		}
