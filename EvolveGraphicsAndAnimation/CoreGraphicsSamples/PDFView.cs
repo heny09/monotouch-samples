@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using System.Drawing;
-using MonoTouch.Foundation;
+using UIKit;
+using CoreGraphics;
+using CoreGraphics;
+using Foundation;
 
 namespace CoreGraphicsSamples
 {
@@ -18,9 +18,9 @@ namespace CoreGraphicsSamples
 			pdfDoc = CGPDFDocument.FromFile ("file.pdf");
 		}
 
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
-			base.Draw (rect);
+			base.Draw ((CGRect)rect);
 				
 			//flip the CTM so the PDF will be drawn upright
 			using (CGContext g = UIGraphics.GetCurrentContext ()) {
@@ -31,7 +31,7 @@ namespace CoreGraphicsSamples
 				using (CGPDFPage pdfPage = pdfDoc.GetPage (1)) {
 					
 					//get the affine transform that defines where the PDF is drawn
-					CGAffineTransform t = pdfPage.GetDrawingTransform (CGPDFBox.Crop, rect, 0, true);
+					CGAffineTransform t = pdfPage.GetDrawingTransform (CGPDFBox.Crop, (CGRect)rect, 0, true);
 					//concatenate the pdf transform with the CTM for display in the view
 					g.ConcatCTM (t);
 					//draw the pdf page
@@ -45,7 +45,7 @@ namespace CoreGraphicsSamples
 			//data buffer to hold the PDF
 			NSMutableData data = new NSMutableData ();
 			//create a PDF with empty rectangle, which will configure it for 8.5x11 inches
-			UIGraphics.BeginPDFContext (data, RectangleF.Empty, null);
+			UIGraphics.BeginPDFContext (data, CGRect.Empty, null);
 			//start a PDF page
 			UIGraphics.BeginPDFPage ();       
 			using (CGContext g = UIGraphics.GetCurrentContext ()) {

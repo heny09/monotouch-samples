@@ -1,9 +1,9 @@
 
 using System;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace AnimationSamples
 {
@@ -36,10 +36,10 @@ namespace AnimationSamples
 
 			view1.AddGestureRecognizer (new UITapGestureRecognizer (() => { 
 				UIView.Transition (
-					fromView: view1,
-					toView: view2,
+					fromView: (UIView)view1,
+					toView: (UIView)view2,
 					duration: 2,
-					options: UIViewAnimationOptions.TransitionFlipFromTop | UIViewAnimationOptions.CurveEaseInOut,
+					options: (UIViewAnimationOptions)UIViewAnimationOptions.TransitionFlipFromTop | UIViewAnimationOptions.CurveEaseInOut,
 					completion: () => { Console.WriteLine ("transition complete"); });
 			}));
 

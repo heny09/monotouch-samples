@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace AnimationSamples
 {
@@ -23,7 +23,7 @@ namespace AnimationSamples
 					ModalTransitionStyle = UIModalTransitionStyle.PartialCurl
 				};
 
-				PresentViewController (vc2, true, null);
+				PresentViewController ((UIViewController)vc2, true, (Action)null);
 				#endregion
 
 				#region demo view transition
