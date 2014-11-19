@@ -1,10 +1,10 @@
 using System;
-using System.Drawing;
-using MonoTouch.CoreAnimation;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using CoreAnimation;
+using CoreGraphics;
+using Foundation;
+using ObjCRuntime;
+using UIKit;
 
 namespace FrogScroller
 {
@@ -18,8 +18,8 @@ namespace FrogScroller
 
 		string ImageName { get; set; }
 
-		public TilingView (string name, SizeF size) : 
-			base (new RectangleF (PointF.Empty, size))
+		public TilingView (string name, CGSize size) : 
+			base (new CGRect (CGPoint.Empty, size))
 		{
 			ImageName = name;
 			var tiledLayer = (CATiledLayer)this.Layer; 
@@ -29,13 +29,14 @@ namespace FrogScroller
 		// tiling view's contentScaleFactor at 1.0. UIKit will try to set it back to 2.0 on retina displays, which is the
 		// right call in most cases, but since we're backed by a CATiledLayer it will actually cause us to load the
 		// wrong sized tiles.
-		public override float ContentScaleFactor {
+        // TODO: Changed type of overridden property from float to nfloat
+		public override nfloat ContentScaleFactor {
 			set {
 				base.ContentScaleFactor = 1.0f;
 			}
 		}
 
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			using (var context = UIGraphics.GetCurrentContext ()) {
 
@@ -58,6 +59,7 @@ namespace FrogScroller
 				tileSize.Height /= scale;
 
 				// calculate the rows and columns of tiles that intersect the rect we have been asked to draw
+                // TODO: Removed casting of nfloat to CGRect passed to Math.Floor()
 				int firstCol = (int)Math.Floor (rect.GetMinX () / tileSize.Width);
 				int lastCol = (int)Math.Floor ((rect.GetMaxX () - 1) / tileSize.Width);
 				int firstRow = (int)Math.Floor (rect.GetMinY () / tileSize.Height);
@@ -65,12 +67,13 @@ namespace FrogScroller
 
 				for (int row = firstRow; row <= lastRow; row++) {
 					for (int col = firstCol; col <= lastCol; col++) {
-					 
-						UIImage tile = TileForScale (scale, row, col);
-						var tileRect = new RectangleF (tileSize.Width * col, tileSize.Height * row, tileSize.Width, tileSize.Height);
+					    // TODO: Cast nfloat to float
+						UIImage tile = TileForScale ((float)scale, row, col);
+						var tileRect = new CGRect (tileSize.Width * col, tileSize.Height * row, tileSize.Width, tileSize.Height);
 						// if the tile would stick outside of our bounds, we need to truncate it so as to avoid
 						// stretching out the partial tiles at the right and bottom edges
 						tileRect.Intersect (this.Bounds);
+                        // TODO: Removed casting of CGRect to CGPoint in UIImage.Draw()
 						tile.Draw (tileRect);
 					}
 				}

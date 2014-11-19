@@ -1,13 +1,13 @@
 #define TILE_IMAGES
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace FrogScroller
 {
@@ -20,12 +20,12 @@ namespace FrogScroller
 
 	public class ImageScrollView : UIScrollView
 	{
-		SizeF _imageSize;
+		CGSize _imageSize;
 		UIImageView zoomView; // if tiling this contains a very low-res placeholder image. otherwise it contains the full image.
 #if TILE_IMAGES
 		TilingView tilingView;
 #endif
-		PointF _pointToCenterAfterResize;
+		CGPoint _pointToCenterAfterResize;
 		float _scaleToRestoreAfterResize;
 		int _index;
 		
@@ -33,7 +33,7 @@ namespace FrogScroller
 		{
 		}
 
-		public ImageScrollView (RectangleF frame) : base (frame)
+		public ImageScrollView (CGRect frame) : base (frame)
 		{
 			ShowsVerticalScrollIndicator = false;
 			ShowsHorizontalScrollIndicator = false;
@@ -59,16 +59,19 @@ namespace FrogScroller
 			base.LayoutSubviews ();
 
 			//center the zoom view as it becomes smaller than the size of the screen
+            // TODO: Change RectangleF.CGSize to CGRect.Size
 			var boundsSize = this.Bounds.Size;
 			var frameToCenter = zoomView.Frame;
 
 			//center horizontally
+            // TODO: Change RectangleF.CGSize to CGRect.Size
 			if (frameToCenter.Size.Width < boundsSize.Width)
 				frameToCenter.X = (boundsSize.Width - frameToCenter.Size.Width) / 2;
 			else
 				frameToCenter.X = 0;
 
 			//center vertically
+            // TODO: Change RectangleF.CGSize to CGRect.Size
 			if (frameToCenter.Size.Height < boundsSize.Height)
 				frameToCenter.Y = (boundsSize.Height - frameToCenter.Size.Height) / 2;
 			else
@@ -77,11 +80,12 @@ namespace FrogScroller
 			zoomView.Frame = frameToCenter;
 		}
 
-		public override RectangleF Frame {
+		public override CGRect Frame {
 			get {
 				return base.Frame;
 			}
 			set {
+                // TODO: Change RectangleF.CGSize to CGRect.Size
 				bool sizeChanging = Frame.Size != value.Size;
 				if (sizeChanging) 
 					PrepareToResize ();					
@@ -95,7 +99,7 @@ namespace FrogScroller
 
 		// - Configure scrollView to display new image (tiled or not)
  #if TILE_IMAGES
-		public void DisplayTiledImageNamed (string imageName, SizeF image_Size)
+		public void DisplayTiledImageNamed (string imageName, CGSize image_Size)
 		{
 			//clear views for the previous image
 			if (zoomView != null) {
@@ -106,7 +110,7 @@ namespace FrogScroller
 			this.ZoomScale = 1.0f;
 		
 	    	//make views to display the new image
-			zoomView = new UIImageView (new RectangleF (PointF.Empty, image_Size)) {
+			zoomView = new UIImageView (new CGRect (CGPoint.Empty, image_Size)) {
 				Image = PlaceholderImageNamed (imageName)
 			};
 
@@ -131,11 +135,12 @@ namespace FrogScroller
 			}
 			zoomView = new UIImageView (image);
 			this.AddSubview (zoomView);
+            // TODO: Change UIImage.CGSize to UIImage.Size
 			ConfigureForImageSize (image.Size);
 		}
 #endif
 
-		public void ConfigureForImageSize (SizeF imageSize)
+		public void ConfigureForImageSize (CGSize imageSize)
 		{
 			_imageSize = imageSize;
 			ContentSize = imageSize;
@@ -145,11 +150,13 @@ namespace FrogScroller
 
 		public void SetMaxMinZoomScalesForCurrentBounds ()
 		{
-			SizeF boundsSize = Bounds.Size;
+            // TODO: Change RectangleF.CGSize to CGRect.Size
+			CGSize boundsSize = Bounds.Size;
 
 			//calculate min/max zoomscale
-			float xScale = boundsSize.Width / _imageSize.Width; //scale needed to perfectly fit the image width-wise
-			float yScale = boundsSize.Height / _imageSize.Height; //scale needed to perfectly fit the image height-wise
+            // TODO: Cast nfolat to float
+			float xScale = (float)(boundsSize.Width / _imageSize.Width); //scale needed to perfectly fit the image width-wise
+			float yScale = (float)(boundsSize.Height / _imageSize.Height); //scale needed to perfectly fit the image height-wise
 				     
 			//fill width if the image and phone are both portrait or both landscape; otherwise take smaller scale
 			bool imagePortrait = _imageSize.Height > _imageSize.Width;
@@ -157,7 +164,8 @@ namespace FrogScroller
 			float minScale = (imagePortrait == phonePortrait ? xScale : Math.Min (xScale, yScale));
 
 			//on high resolution screens we have double the pixel density, so we will be seeing every pixel if we limit the maximum zoom scale to 0.5
-			float maxScale = 1.0f / UIScreen.MainScreen.Scale;
+            // TODO: Cast nfloat to float
+			float maxScale = 1.0f / (float)UIScreen.MainScreen.Scale;
 
 			if (minScale > maxScale) {
 				minScale = maxScale;
@@ -172,9 +180,10 @@ namespace FrogScroller
 		// Rotation support
 		public void PrepareToResize ()
 		{
-			var boundsCenter = new PointF (Bounds.Width / 2, Bounds.Height / 2);
-			_pointToCenterAfterResize = this.ConvertPointToView (boundsCenter, zoomView);
-			_scaleToRestoreAfterResize = this.ZoomScale;
+			var boundsCenter = new CGPoint (Bounds.Width / 2, Bounds.Height / 2);
+			_pointToCenterAfterResize = (CGPoint)this.ConvertPointToView ((CGPoint)boundsCenter, (UIView)zoomView);
+            // TODO: Cast nfloat to float
+			_scaleToRestoreAfterResize = (float)this.ZoomScale;
 			// If we're at the minimum zoom scale, preserve that by returning 0, which will be converted to the minimum
 			// allowable scale when the scale is restored.
 			if (_scaleToRestoreAfterResize <= this.MinimumZoomScale + float.Epsilon)
@@ -186,31 +195,35 @@ namespace FrogScroller
 			SetMaxMinZoomScalesForCurrentBounds ();
 
 			//Step 1: restore zoom scale, first making sure it is within the allowable range;
-			ZoomScale = Math.Min (MaximumZoomScale, Math.Max (this.MinimumZoomScale, _scaleToRestoreAfterResize));
+            // TODO: Cast double to float
+			ZoomScale = (float)Math.Min (MaximumZoomScale, Math.Max (this.MinimumZoomScale, _scaleToRestoreAfterResize));
 
 			// Step 2: restore center point, first making sure it is within the allowable range.			
 			// 2a: convert our desired center point back to our own coordinate space
-			var boundsCenter = this.ConvertPointFromView (_pointToCenterAfterResize, zoomView);
+			var boundsCenter = (CGPoint)this.ConvertPointFromView ((CGPoint)_pointToCenterAfterResize, (UIView)zoomView);
 			// 2b: calculate the content offset that would yield that center point
-			PointF offset = new PointF (boundsCenter.X - this.Bounds.Size.Width / 2.0f, boundsCenter.Y - this.Bounds.Size.Height / 2.0f);
+            // TODO: Change RectangleF.CGSize to CGRect.Size
+			CGPoint offset = new CGPoint (boundsCenter.X - this.Bounds.Size.Width / 2.0f, boundsCenter.Y - this.Bounds.Size.Height / 2.0f);
 			// 2c: restore offset, adjusted to be within the allowable range
-			PointF maxOffset = MaximumContentOffset ();
-			PointF minOffset = MinimumContentOffset ();
-			offset.X = Math.Max (minOffset.X, Math.Min (maxOffset.X, offset.X));
-			offset.Y = Math.Max (minOffset.Y, Math.Min (maxOffset.Y, offset.Y));
+			CGPoint maxOffset = MaximumContentOffset ();
+			CGPoint minOffset = MinimumContentOffset ();
+            // TODO: Cast double to float
+			offset.X = (float)Math.Max (minOffset.X, Math.Min (maxOffset.X, offset.X));
+			offset.Y = (float)Math.Max (minOffset.Y, Math.Min (maxOffset.Y, offset.Y));
 			this.ContentOffset = offset;
 		}
 	    
-		public PointF MaximumContentOffset ()
+		public CGPoint MaximumContentOffset ()
 		{
-			SizeF contentSize = ContentSize;
-			SizeF boundsSize = Bounds.Size;
-			return new PointF (contentSize.Width - boundsSize.Width, contentSize.Height - boundsSize.Height);
+			CGSize contentSize = ContentSize;
+            // TODO: Change RectangleF.CGSize to CGRect.Size
+			CGSize boundsSize = Bounds.Size;
+			return new CGPoint (contentSize.Width - boundsSize.Width, contentSize.Height - boundsSize.Height);
 		}
 
-		public PointF MinimumContentOffset ()
+		public CGPoint MinimumContentOffset ()
 		{
-			return PointF.Empty;
+			return CGPoint.Empty;
 		}
 
 		static List<ImageDetails> data;
@@ -252,10 +265,10 @@ namespace FrogScroller
 			return _name [index].Name;
 		}
 
-		public static SizeF ImageSizeAtIndex (int index)
+		public static CGSize ImageSizeAtIndex (int index)
 		{
 			List<ImageDetails> _name = ImageData ();
-			return new SizeF (_name [index].Width, _name [index].Height);
+			return new CGSize (_name [index].Width, _name [index].Height);
 		}
 
 		public static UIImage PlaceholderImageNamed (string name)
