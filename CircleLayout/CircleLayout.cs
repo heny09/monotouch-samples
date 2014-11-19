@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.CoreAnimation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using Foundation;
+using CoreAnimation;
+using UIKit;
 
 namespace CircleLayout
 {
@@ -13,7 +13,7 @@ namespace CircleLayout
 
 		int cellCount = 20;
 		float radius;
-		PointF center;
+		CGPoint center;
 
 		public CircleLayout ()
 		{
@@ -23,14 +23,17 @@ namespace CircleLayout
 		{
 			base.PrepareLayout ();
 
-			SizeF size = CollectionView.Frame.Size;
-			cellCount = CollectionView.NumberOfItemsInSection (0);
-			center = new PointF (size.Width / 2.0f, size.Height / 2.0f);
-			radius = Math.Min (size.Width, size.Height) / 2.5f;
+            // TODO: Change CollectionView.Frame.CGSize to Change CollectionView.Frame.Size
+			CGSize size = CollectionView.Frame.Size;
+			cellCount = (int)CollectionView.NumberOfItemsInSection ((nint)0);
+			center = new CGPoint (size.Width / 2.0f, size.Height / 2.0f);
+            // TODO: Cast double to float;
+			radius = (float)Math.Min (size.Width, size.Height) / 2.5f;
 		}
 			
-		public override SizeF CollectionViewContentSize {
+		public override CGSize CollectionViewContentSize {
 			get {
+                // TODO: Change CollectionView.Frame.CGSize to Change CollectionView.Frame.Size
 				return CollectionView.Frame.Size;
 			}
 		}
@@ -38,22 +41,22 @@ namespace CircleLayout
 		public override UICollectionViewLayoutAttributes LayoutAttributesForItem (NSIndexPath path)
 		{
 			UICollectionViewLayoutAttributes attributes = UICollectionViewLayoutAttributes.CreateForCell (path);
-			attributes.Size = new SizeF (ItemSize, ItemSize);
-			attributes.Center = new PointF (center.X + radius * (float) Math.Cos (2 * path.Row * Math.PI / cellCount),
+			attributes.Size = new CGSize (ItemSize, ItemSize);
+			attributes.Center = new CGPoint (center.X + radius * (float) Math.Cos (2 * path.Row * Math.PI / cellCount),
 			                                center.Y + radius * (float) Math.Sin (2 * path.Row * Math.PI / cellCount));
 			return attributes;
 		}
 
-		public override UICollectionViewLayoutAttributes[] LayoutAttributesForElementsInRect (RectangleF rect)
+		public override UICollectionViewLayoutAttributes[] LayoutAttributesForElementsInRect (CGRect rect)
 		{
 			var attributes = new UICollectionViewLayoutAttributes [cellCount];
 
 			for (int i = 0; i < cellCount; i++) {
-				NSIndexPath indexPath = NSIndexPath.FromItemSection (i, 0);
+				NSIndexPath indexPath = (NSIndexPath)NSIndexPath.FromItemSection ((nint)i, (nint)0);
 				attributes [i] = LayoutAttributesForItem (indexPath);
 			}
 		
-			return attributes;
+			return (UICollectionViewLayoutAttributes[])attributes;
 		}
 #if false
 		// that's part of the original sample - but never called

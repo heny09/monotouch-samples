@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace CircleLayout
 {
@@ -31,14 +31,14 @@ namespace CircleLayout
 			return UIStatusBarStyle.LightContent;
 		}
 
-		public override int GetItemsCount (UICollectionView collectionView, int section)
+		public override nint GetItemsCount (UICollectionView collectionView, nint section)
 		{
-			return cellCount;
+			return (nint)cellCount;
 		}
 
 		public override UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath)
 		{
-			return (UICollectionViewCell) collectionView.DequeueReusableCell (cellClass, indexPath);
+			return (UICollectionViewCell) collectionView.DequeueReusableCell ((NSString)cellClass, (NSIndexPath)indexPath);
 		}
 
 		void HandleTapGesture (UITapGestureRecognizer sender)
@@ -46,23 +46,23 @@ namespace CircleLayout
 			if (sender.State != UIGestureRecognizerState.Ended)
 				return;
 			
-			PointF initialPinchPoint = sender.LocationInView (CollectionView);
-			NSIndexPath tappedCellPath = CollectionView.IndexPathForItemAtPoint (initialPinchPoint);
+			CGPoint initialPinchPoint = (CGPoint)sender.LocationInView ((UIView)CollectionView);
+			NSIndexPath tappedCellPath = (NSIndexPath)CollectionView.IndexPathForItemAtPoint ((CGPoint)initialPinchPoint);
 			
 			if (tappedCellPath != null) {
 				cellCount--;
 				
-				CollectionView.PerformBatchUpdates (delegate {
+				CollectionView.PerformBatchUpdates ((Action)delegate {
 						CollectionView.DeleteItems (new NSIndexPath [] { tappedCellPath });
-					}, null);
+					}, (UICompletionHandler)null);
 			} else {
 				cellCount++;
 				
-				CollectionView.PerformBatchUpdates (delegate {
+				CollectionView.PerformBatchUpdates ((Action)delegate {
 						CollectionView.InsertItems (new NSIndexPath[] {
 								NSIndexPath.FromItemSection (0, 0)
 							});
-					}, null);
+					}, (UICompletionHandler)null);
 			}
 		}
 	}
