@@ -1,7 +1,7 @@
 using System;
-using Foundation;
-using CoreLocation;
-using UIKit;
+using MonoTouch.Foundation;
+using MonoTouch.CoreLocation;
+using MonoTouch.UIKit;
 
 namespace AirLocate {
 
@@ -125,8 +125,8 @@ namespace AirLocate {
 					var region = (CLBeaconRegion) locationManger.MonitoredRegions.AnyObject;
 					if (region != null)
 						locationManger.StopMonitoring (region);
-				}// TODO: PopViewControllerAnimated to PopViewController
-				NavigationController.PopViewController (true);
+				}
+				NavigationController.PopViewControllerAnimated (true);
 			});
 
 			NavigationItem.RightBarButtonItem = saveButton;

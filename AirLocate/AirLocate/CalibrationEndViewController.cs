@@ -1,6 +1,6 @@
 using System;
-using CoreGraphics;
-using UIKit;
+using System.Drawing;
+using MonoTouch.UIKit;
 
 namespace AirLocate {
 
@@ -18,9 +18,9 @@ namespace AirLocate {
 			base.ViewDidLoad ();
 			View.BackgroundColor = UIColor.White;
 
-			var measuredPowerLabel = new UILabel (new CGRect (0, 0, View.Bounds.Width, View.Bounds.Height)) {
+			var measuredPowerLabel = new UILabel (new RectangleF (0, 0, View.Bounds.Width, View.Bounds.Height)) {
 				AutoresizingMask = UIViewAutoresizing.FlexibleMargins,
-				Font = (UIFont)UIFont.SystemFontOfSize ((nfloat)32.0f),
+				Font = UIFont.SystemFontOfSize (32.0f),
 				TextAlignment = UITextAlignment.Center,
 				Text = measured_power.ToString ()
 			};
@@ -28,8 +28,7 @@ namespace AirLocate {
 
 			var doneButton = new UIBarButtonItem (UIBarButtonSystemItem.Done);
 			doneButton.Clicked += (sender, e) => {
-                // TODO: PopViewControllerAnimated to PopViewController
-				NavigationController.PopViewController (true);
+				NavigationController.PopViewControllerAnimated (true);
 			};
 
 			NavigationItem.RightBarButtonItem = doneButton;

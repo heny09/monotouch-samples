@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using CoreFoundation;
-using CoreLocation;
-using Foundation;
+using MonoTouch.CoreFoundation;
+using MonoTouch.CoreLocation;
+using MonoTouch.Foundation;
 
 namespace AirLocate {
 
@@ -53,7 +53,7 @@ namespace AirLocate {
 				rangedBeacons.Add (e.Beacons);
 				var progress = ProgressHandler;
 				if (progress != null) {
-					DispatchQueue.MainQueue.DispatchAsync ((Action)delegate {
+					DispatchQueue.MainQueue.DispatchAsync (delegate {
 						percentComplete += 1.0f / 20.0f;
 						progress (this, new CalibrationProgressEventArgs () { PercentComplete = percentComplete });
 					});
@@ -79,10 +79,10 @@ namespace AirLocate {
 				ProgressHandler = handler;
 
 				locationManager.StartRangingBeacons (region);
-				timer = (NSTimer)NSTimer.CreateTimer (20.0f, new Action<NSTimer> (delegate {
+				timer = NSTimer.CreateTimer (20.0f, new NSAction (delegate {
 					locationManager.StopRangingBeacons (region);
 
-					DispatchQueue.DefaultGlobalQueue.DispatchAsync (new Action (delegate {
+					DispatchQueue.DefaultGlobalQueue.DispatchAsync (new NSAction (delegate {
 						NSError error = null;
 						List<CLBeacon> allBeacons = new List<CLBeacon> ();
 						int measuredPower = 0;
