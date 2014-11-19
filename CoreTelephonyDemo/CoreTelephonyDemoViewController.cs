@@ -1,9 +1,9 @@
-using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
+using CoreGraphics;
 using System;
 using System.Collections.Generic;
-using MonoTouch.Foundation;
-using MonoTouch.CoreTelephony;
+using Foundation;
+using CoreTelephony;
 
 namespace CoreTelephonyDemo
 {
@@ -36,7 +36,8 @@ namespace CoreTelephonyDemo
 		
 		private void ProviderUpdatedEvent (CTCarrier carrier)
 		{
-			MonoTouch.CoreFoundation.DispatchQueue.MainQueue.DispatchSync (() =>
+            // TODO: Change MonoTouch.CoreFoundation.DispatchQueue to CoreFoundation.DispatchQueue
+			CoreFoundation.DispatchQueue.MainQueue.DispatchSync (() =>
 			{
 				carrierName = carrier == null ? null : carrier.CarrierName;
 				TableView.ReloadData ();
@@ -45,7 +46,8 @@ namespace CoreTelephonyDemo
 		
 		private void CallEvent (CTCall inCTCall)
 		{
-			MonoTouch.CoreFoundation.DispatchQueue.MainQueue.DispatchSync (() =>
+            // TODO: Change MonoTouch.CoreFoundation.DispatchQueue to CoreFoundation.DispatchQueue
+			CoreFoundation.DispatchQueue.MainQueue.DispatchSync (() =>
 			{
 				NSSet calls = callCenter.CurrentCalls;
 				calls = callCenter.CurrentCalls;
@@ -101,17 +103,17 @@ namespace CoreTelephonyDemo
 			}
 			
 			#region implemented abstract members of MonoTouch.UIKit.UITableViewDataSource
-			public override int RowsInSection (UITableView tableView, int section)
+			public override nint RowsInSection (UITableView tableView, nint section)
 			{
-				switch ((SectionIndex) section) {
+				switch ((SectionIndex) (int)section) {
 				case SectionIndex.CurrentCall:
-					return Math.Max (controller.calls.Length, 1);
+					return (nint)Math.Max (controller.calls.Length, 1);
 				case SectionIndex.CallCenter:
-					return (int) SectionRow.CallCenter;
+					return (nint)(int) SectionRow.CallCenter;
 				case SectionIndex.Carrier:
-					return (int) SectionRow.Carrier;
+					return (nint)(int) SectionRow.Carrier;
 				default:
-					return 1;
+					return (nint)1;
 				}
 			}
 			
@@ -173,20 +175,20 @@ namespace CoreTelephonyDemo
 			}
 			#endregion
 			
-			public override int NumberOfSections (UITableView tableView)
+			public override nint NumberOfSections (UITableView tableView)
 			{
-				return (int) SectionIndex.Count;
+				return (nint)(int) SectionIndex.Count;
 			}
 			
-			public override string TitleForHeader (UITableView tableView, int section)
+			public override string TitleForHeader (UITableView tableView, nint section)
 			{
-				switch ((SectionIndex) section) {
+				switch ((SectionIndex) (int)section) {
 				case SectionIndex.CurrentCall: 
-					return "Current call";
+					return (string )"Current call";
 				case SectionIndex.CallCenter: 
-					return "Call center";
+					return (string )"Call center";
 				case SectionIndex.Carrier:
-					return "Carrier";
+					return (string )"Carrier";
 				default: 
 					return null;
 				}
