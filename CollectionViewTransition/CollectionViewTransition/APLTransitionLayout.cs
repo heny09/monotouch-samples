@@ -1,6 +1,7 @@
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using Foundation;
+using System;
+using UIKit;
 
 namespace CollectionViewTransition {
 
@@ -16,33 +17,34 @@ namespace CollectionViewTransition {
 		public void SetTransitionProgress (float transitionProgress)
 		{
 			base.TransitionProgress = transitionProgress;
-			float offsetH = GetValueForAnimatedKey ("offsetH");
-			float offsetV = GetValueForAnimatedKey ("offsetV");
+			float offsetH = (float)GetValueForAnimatedKey ("offsetH");
+			float offsetV = (float)GetValueForAnimatedKey ("offsetV");
 			Offset = new UIOffset (offsetH, offsetV);
 		}
 
 		public void SetOffset (UIOffset offset)
 		{
-			UpdateValue (offset.Horizontal, "offsetH");
-			UpdateValue (offset.Vertical, "offsetV");
+            // TODO: Added "using System;" in order for migration tool nfloat cast to work
+			UpdateValue ((nfloat)offset.Horizontal, "offsetH");
+			UpdateValue ((nfloat)offset.Vertical, "offsetV");
 			Offset = offset;
 		}
 
-		public override UICollectionViewLayoutAttributes[] LayoutAttributesForElementsInRect (RectangleF rect)
+		public override UICollectionViewLayoutAttributes[] LayoutAttributesForElementsInRect (CGRect rect)
 		{
-			UICollectionViewLayoutAttributes[] attributes = base.LayoutAttributesForElementsInRect (rect);
+			UICollectionViewLayoutAttributes[] attributes = (UICollectionViewLayoutAttributes[])base.LayoutAttributesForElementsInRect ((CGRect)rect);
 			foreach (var attribute in attributes) {
-				PointF center = attribute.Center;
-				attribute.Center = new PointF (center.X + Offset.Horizontal, center.Y + Offset.Vertical);
+				CGPoint center = attribute.Center;
+				attribute.Center = new CGPoint (center.X + Offset.Horizontal, center.Y + Offset.Vertical);
 			}
-			return attributes;
+			return (UICollectionViewLayoutAttributes[])attributes;
 		}
 
 		public override UICollectionViewLayoutAttributes LayoutAttributesForItem (NSIndexPath indexPath)
 		{
 			UICollectionViewLayoutAttributes attributes = base.LayoutAttributesForItem (indexPath);
-			PointF center = attributes.Center;
-			attributes.Center = new PointF (center.X + Offset.Horizontal, center.Y + Offset.Vertical);
+			CGPoint center = attributes.Center;
+			attributes.Center = new CGPoint (center.X + Offset.Horizontal, center.Y + Offset.Vertical);
 			return attributes;
 		}
 	}

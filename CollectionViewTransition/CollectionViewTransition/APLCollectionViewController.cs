@@ -1,8 +1,8 @@
 //#define NO_IMAGES
 using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 namespace CollectionViewTransition {
 
@@ -15,19 +15,19 @@ namespace CollectionViewTransition {
 			CollectionView.RegisterClassForCell (typeof (APLCollectionViewCell), APLCollectionViewCell.Key);
 		}
 
-		public override int NumberOfSections (UICollectionView collectionView)
+		public override nint NumberOfSections (UICollectionView collectionView)
 		{
-			return 1;
+			return (nint)1;
 		}
 
-		public override int GetItemsCount (UICollectionView collectionView, int section)
+		public override nint GetItemsCount (UICollectionView collectionView, nint section)
 		{
-			return MAX_COUNT;
+			return (nint)MAX_COUNT;
 		}
 
 		public override UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath)
 		{
-			var cell = collectionView.DequeueReusableCell (APLCollectionViewCell.Key, indexPath) as APLCollectionViewCell;
+			var cell = (NSObject)(collectionView.DequeueReusableCell (APLCollectionViewCell.Key, indexPath) )as APLCollectionViewCell;
 #if NO_IMAGES
 			float hue = indexPath.Item / (float) MAX_COUNT;
 			UIColor cellColor = UIColor.FromHSB (hue, 1.0f, 1.0f);
@@ -43,7 +43,7 @@ namespace CollectionViewTransition {
 			return new APLTransitionLayout (fromLayout, toLayout);
 		}
 
-		public virtual UICollectionViewController NextViewControllerAtPoint (PointF p)
+		public virtual UICollectionViewController NextViewControllerAtPoint (CGPoint p)
 		{
 			return null;
 		}
