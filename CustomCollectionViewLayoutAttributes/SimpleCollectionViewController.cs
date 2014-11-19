@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using MonoTouch.CoreGraphics;
+using UIKit;
+using Foundation;
+using CoreGraphics;
 
 namespace SimpleCollectionView
 {
@@ -35,7 +35,7 @@ namespace SimpleCollectionView
         void Tapped ()
         {
             if (tapRecognizer.State == UIGestureRecognizerState.Ended) {
-                var pinchPoint = tapRecognizer.LocationInView (CollectionView);
+                var pinchPoint = (CGPoint)tapRecognizer.LocationInView ((UIView)CollectionView);
 				var tappedCellPath = GetIndexPathsForVisibleItems (pinchPoint);
                 if (tappedCellPath != null) {
 					animals.RemoveAt (tappedCellPath.Row);
@@ -44,7 +44,7 @@ namespace SimpleCollectionView
             }
         }
 
-		public NSIndexPath GetIndexPathsForVisibleItems (PointF touchPoint)
+		public NSIndexPath GetIndexPathsForVisibleItems (CGPoint touchPoint)
 		{
 			for (int i = 0; i < CollectionView.VisibleCells.Length; i++) {
 				if (CollectionView.VisibleCells [i].Frame.Contains (touchPoint))
@@ -54,14 +54,14 @@ namespace SimpleCollectionView
 			return null;
 		}
 
-        public override int GetItemsCount (UICollectionView collectionView, int section)
+        public override nint GetItemsCount (UICollectionView collectionView, nint section)
         {
-            return animals.Count;
+            return (nint)animals.Count;
         }
 
-        public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
+        public override UICollectionViewCell GetCell (UICollectionView collectionView, Foundation.NSIndexPath indexPath)
         {
-            var animalCell = (AnimalCell) collectionView.DequeueReusableCell (animalCellId, indexPath);
+            var animalCell = (AnimalCell) collectionView.DequeueReusableCell ((NSString)animalCellId, (NSIndexPath)indexPath);
 
             var animal = animals [indexPath.Row];
             animalCell.Image = animal.Image;
@@ -74,8 +74,9 @@ namespace SimpleCollectionView
     {
         UIImageView imageView;
 
+        // TODO: Change System.Drawing.CGRect to CGRect
         [Export ("initWithFrame:")]
-        public AnimalCell (System.Drawing.RectangleF frame) : base (frame)
+        public AnimalCell (CGRect frame) : base (frame)
         {
             BackgroundView = new UIView { BackgroundColor = UIColor.Orange };
 
@@ -104,10 +105,11 @@ namespace SimpleCollectionView
 			var attributes = layoutAttributes as CustomCollectionViewLayoutAttributes;
 			if (attributes != null) {
 				var data = attributes.Data;
-				attributes.Center = new PointF (data.Center.X + data.Radius * attributes.Distance * (float) Math.Cos (2 * attributes.Row * Math.PI / data.CellCount),
+				attributes.Center = new CGPoint (data.Center.X + data.Radius * attributes.Distance * (float) Math.Cos (2 * attributes.Row * Math.PI / data.CellCount),
 				                                data.Center.Y + data.Radius * attributes.Distance * (float) Math.Sin (2 * attributes.Row * Math.PI / data.CellCount));
 
-				if (!float.IsNaN (attributes.Center.X) && !float.IsNaN (attributes.Center.Y) &&
+                // TODO: Use nfloat.IsNan instead of float.IsNaN
+				if (!nfloat.IsNaN (attributes.Center.X) && !nfloat.IsNaN (attributes.Center.Y) &&
 					UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
 					Center = attributes.Center;
 			}
