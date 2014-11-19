@@ -63,7 +63,8 @@ namespace Example_Drawing.Screens.iPad.Transformations
 			
 			// create our offscreen bitmap context
 			// size
-			CGSize bitmapSize = new CGSize (imageView.Frame.CGSize);
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			CGSize bitmapSize = new CGSize (imageView.Frame.Size);
 			using (CGBitmapContext context = new CGBitmapContext (IntPtr.Zero, (int)bitmapSize.Width, (int)bitmapSize.Height, 8, (int)(4 * bitmapSize.Width), CGColorSpace.CreateDeviceRGB (), CGImageAlphaInfo.PremultipliedFirst)) {
 
 				// save the state of the context while we change the CTM

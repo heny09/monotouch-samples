@@ -30,7 +30,8 @@ namespace Example_Drawing.Screens.iPad.FlagOffScreen
 			
 			// create our offscreen bitmap context
 			// size
-			CGSize bitmapSize = new CGSize (imageView.Frame.CGSize);
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			CGSize bitmapSize = new CGSize (imageView.Frame.Size);
 			using (CGBitmapContext context = new CGBitmapContext (IntPtr.Zero,
 									      (int)bitmapSize.Width, (int)bitmapSize.Height, 8,
 									      (int)(4 * bitmapSize.Width), CGColorSpace.CreateDeviceRGB (),
@@ -56,7 +57,8 @@ namespace Example_Drawing.Screens.iPad.FlagOffScreen
 			int i, j;
 			
 			// general sizes
-			float flagWidth = imageView.Frame.Width * .8f;
+            // TODO: Cast from nfloat to float
+			float flagWidth = (float)imageView.Frame.Width * .8f;
 			float flagHeight = (float)(flagWidth / 1.9);
 			CGPoint flagOrigin = new CGPoint (imageView.Frame.Width * .1f, imageView.Frame.Height / 3);
 			
@@ -87,7 +89,8 @@ namespace Example_Drawing.Screens.iPad.FlagOffScreen
 			context.RestoreState ();
 			
 			// create a stripe layer
-			using (CGLayer stripeLayer = CGLayer.Create (context, stripeRect.CGSize)) {
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			using (CGLayer stripeLayer = CGLayer.Create (context, stripeRect.Size)) {
 				
 				// set red as the fill color
 				// this works
@@ -116,7 +119,8 @@ namespace Example_Drawing.Screens.iPad.FlagOffScreen
 			context.FillRect (starField);
 			
 			// create the star layer
-			using (CGLayer starLayer = CGLayer.Create (context, starField.CGSize)) {
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			using (CGLayer starLayer = CGLayer.Create (context, starField.Size)) {
 				
 				// draw the stars
 				DrawStar (starLayer.Context, starDiameter);

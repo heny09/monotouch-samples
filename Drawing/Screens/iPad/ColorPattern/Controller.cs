@@ -30,7 +30,8 @@ namespace Example_Drawing.Screens.iPad.ColorPattern
 			
 			// create our offscreen bitmap context
 			// size
-			CGSize bitmapSize = new CGSize (View.Frame.CGSize);
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			CGSize bitmapSize = new CGSize (View.Frame.Size);
 			using (CGBitmapContext context = new CGBitmapContext (IntPtr.Zero,
 									      (int)bitmapSize.Width, (int)bitmapSize.Height, 8,
 									      (int)(4 * bitmapSize.Width), CGColorSpace.CreateDeviceRGB (),
@@ -48,7 +49,8 @@ namespace Example_Drawing.Screens.iPad.ColorPattern
 								   true, DrawPolkaDotPattern);
 				
 				// set our fill as our pattern, color doesn't matter because the pattern handles it
-				context.SetFillPattern (pattern, new float[] { 1 });
+                // TODO: Changed float[] being passed as method parameter to nfloat[]
+				context.SetFillPattern (pattern, new nfloat[] { 1 });
 				
 				// fill the entire view with that pattern
 				context.FillRect (imageView.Frame);

@@ -30,7 +30,8 @@ namespace Example_Drawing.Screens.iPad.Shadows
 			
 			// create our offscreen bitmap context
 			// size
-			CGSize bitmapSize = new CGSize (View.Frame.CGSize);
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			CGSize bitmapSize = new CGSize (View.Frame.Size);
 			using (CGBitmapContext context = new CGBitmapContext (IntPtr.Zero, (int)bitmapSize.Width, (int)bitmapSize.Height, 8, (int)(4 * bitmapSize.Width), CGColorSpace.CreateDeviceRGB (), CGImageAlphaInfo.PremultipliedFirst)) {
 
 				//==== create a grayscale shadow
@@ -48,7 +49,8 @@ namespace Example_Drawing.Screens.iPad.Shadows
 				// 1) save graphics state
 				context.SaveState ();
 				// 2) set shadow context for offset and blur
-				context.SetShadowWithColor(new CGSize (15, -15), 10, UIColor.Blue.CGColor);
+                // TODO: Changed CGContext.SetShadowWithColor to CGContext.SetShadow
+				context.SetShadow(new CGSize (15, -15), 10, UIColor.Blue.CGColor);
 				// 3) perform your drawing operation
 				context.SelectFont ("Helvetica-Bold", 40, CGTextEncoding.MacRoman);
 				context.SetTextDrawingMode (CGTextDrawingMode.Fill);

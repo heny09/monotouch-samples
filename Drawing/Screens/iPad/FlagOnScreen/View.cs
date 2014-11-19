@@ -48,7 +48,8 @@ namespace Example_Drawing.Screens.iPad.FlagOnScreen
 			int i, j;
 			
 			// general sizes
-			float flagWidth = Frame.Width * .8f;
+            // TODO: Cast from nfloat to float
+			float flagWidth = (float)Frame.Width * .8f;
 			float flagHeight = (float)(flagWidth / 1.9);
 			CGPoint flagOrigin = new CGPoint (Frame.Width * .1f, Frame.Height / 3);
 			
@@ -80,7 +81,8 @@ namespace Example_Drawing.Screens.iPad.FlagOnScreen
 			context.RestoreState ();
 			
 			// create a stripe layer
-			using (CGLayer stripeLayer = CGLayer.Create (context, stripeRect.CGSize)) {
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			using (CGLayer stripeLayer = CGLayer.Create (context, stripeRect.Size)) {
 				
 				// set red as the fill color
 				// this works
@@ -109,7 +111,8 @@ namespace Example_Drawing.Screens.iPad.FlagOnScreen
 			context.FillRect (starField);
 			
 			// create the star layer
-			using (CGLayer starLayer = CGLayer.Create (context, starField.CGSize)) {
+            // TODO: Change RectagleF.CGSize to CGRect.Size
+			using (CGLayer starLayer = CGLayer.Create (context, starField.Size)) {
 				
 				// draw the stars
 				DrawStar (starLayer.Context, starDiameter);

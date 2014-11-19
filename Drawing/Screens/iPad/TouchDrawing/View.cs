@@ -33,7 +33,8 @@ namespace Example_Drawing.Screens.iPad.TouchDrawing
 				// loop through each spot and draw it
 				foreach (Spot spot in touchSpots) {
 					context.SetFillColor (spot.Red, spot.Green, spot.Blue, spot.Alpha);
-					context.FillEllipseInRect (new CGRect (spot.CGPoint, spotSize));
+                    // TODO: Changed Spot.CGPoint to Spot.Point
+					context.FillEllipseInRect (new CGRect (spot.Point, spotSize));
 				}
 			}
 		}
@@ -82,7 +83,8 @@ namespace Example_Drawing.Screens.iPad.TouchDrawing
 					Blue = (float)rdm.NextDouble (),
 					Alpha = 1
 				};
-				spot.CGPoint = point;
+                // TODO: Changed Spot.CGPoint to Spot.Point
+				spot.Point = point;
 				return spot;
 			}
 		}
