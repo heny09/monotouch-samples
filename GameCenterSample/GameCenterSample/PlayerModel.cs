@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using MonoTouch.Foundation;
-using MonoTouch.GameKit;
-using MonoTouch.UIKit;
+using Foundation;
+using GameKit;
+using UIKit;
 
 namespace GameCenterSample
 {
@@ -48,7 +48,7 @@ namespace GameCenterSample
 				int index =(int) storedScores.Count - 1;
 				while (index >=0) 
 				{
-					GKScore score = new GKScore (storedScores.ValueAt ((uint)index));
+					GKScore score = new GKScore (storedScores.ValueAt ((nuint)(uint)index));
 					score.ShouldSetDefaultLeaderboard = true;
 					if (score == null)
 						return;
@@ -64,7 +64,7 @@ namespace GameCenterSample
 							new UIAlertView ("Score Stored", "Score Stored ", null, "OK", null).Show();
 						}
 					}));
-					storedScores.RemoveObject(index);
+					storedScores.RemoveObject((nint)index);
 					index --;
 				}
 			}

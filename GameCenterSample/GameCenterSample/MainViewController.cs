@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.GameKit;
+using CoreGraphics;
+using Foundation;
+using UIKit;
+using GameKit;
 
 namespace GameCenterSample
 {
@@ -139,9 +139,9 @@ namespace GameCenterSample
 			GKLeaderboardViewController leaderboardViewController = new GKLeaderboardViewController ();
 			leaderboardViewController.Category = "Leaderboard";
 			leaderboardViewController.DidFinish += (object sender, EventArgs e) => {
-				leaderboardViewController.DismissViewController(true, null);
+				leaderboardViewController.DismissViewController(true, (Action)null);
 			};
-			this.PresentViewController (leaderboardViewController, true, null);
+			this.PresentViewController ((UIViewController)leaderboardViewController, true, (Action)null);
 		}
 
 
@@ -155,9 +155,9 @@ namespace GameCenterSample
 		{
 			GKAchievementViewController achievementViewController = new GKAchievementViewController ();
 			achievementViewController.DidFinish += (object sender, EventArgs e) => {
-				achievementViewController.DismissViewController(true, null);
+				achievementViewController.DismissViewController(true, (Action)null);
 			};
-			this.PresentViewController(achievementViewController, true, null);
+			this.PresentViewController((UIViewController)achievementViewController, true, (Action)null);
 		}
 
 
