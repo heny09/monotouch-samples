@@ -1,13 +1,13 @@
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using OpenTK.Platform.iPhoneOS;
 using OpenTK.Graphics.ES11;
-using System.Drawing;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.CoreAnimation;
+using CoreGraphics;
+using ObjCRuntime;
+using CoreAnimation;
 using OpenTK.Graphics;
-using MonoTouch.Foundation;
-using MonoTouch.OpenGLES;
+using Foundation;
+using OpenGLES;
 
 namespace LowLevelGLPaint
 {
@@ -19,26 +19,26 @@ namespace LowLevelGLPaint
 		uint _framebuffer;
 		uint _renderbuffer;
 		uint _depthbuffer;
-		SizeF _size;
+		CGSize _size;
 		bool _hasBeenCurrent;
 
-		[Export ("layerClass")]
+		[Foundation.Export("layerClass")]
 		public static Class LayerClass ()
 		{
 			return new Class (typeof (CAEAGLLayer));
 		}
 
-		public EAGLView (RectangleF frame)
+		public EAGLView (CGRect frame)
 			: this (frame, All.Rgb565Oes, 0, false)
 		{
 		}
 
-		public EAGLView (RectangleF frame, All format)
+		public EAGLView (CGRect frame, All format)
 			: this (frame, format, 0, false)
 		{
 		}
 
-		public EAGLView (RectangleF frame, All format, All depth, bool retained) : base (frame)
+		public EAGLView (CGRect frame, All format, All depth, bool retained) : base (frame)
 		{
 			CAEAGLLayer eaglLayer = (CAEAGLLayer) Layer;
 			eaglLayer.DrawableProperties = NSDictionary.FromObjectsAndKeys (
@@ -70,23 +70,25 @@ namespace LowLevelGLPaint
 			newSize.Height = (float) Math.Round (newSize.Height);
 
 			int oldRenderbuffer = 0, oldFramebuffer = 0;
-			GL.GetInteger (All.RenderbufferBindingOes, ref oldRenderbuffer);
-			GL.GetInteger (All.FramebufferBindingOes, ref oldFramebuffer);
+            // TODO: GL.GetInteger(All, ref int) tp (All, out int)
+			GL.GetInteger (All.RenderbufferBindingOes, out oldRenderbuffer);
+			GL.GetInteger (All.FramebufferBindingOes, out oldFramebuffer);
 
-			GL.Oes.GenRenderbuffers (1, ref _renderbuffer);
+            // TODO: GL.Oes.GenRenderbuffers(int, ref uint) (int, out uint)
+			GL.Oes.GenRenderbuffers (1, out _renderbuffer);
 			GL.Oes.BindRenderbuffer (All.RenderbufferOes, _renderbuffer);
 
-			if (!_context.EAGLContext.RenderBufferStorage ((uint) All.RenderbufferOes, eaglLayer)) {
+			if (!_context.EAGLContext.RenderBufferStorage ((nuint)(uint) All.RenderbufferOes, (CAEAGLLayer)eaglLayer)) {
 				GL.Oes.DeleteRenderbuffers (1, ref _renderbuffer);
 				GL.Oes.BindRenderbuffer (All.RenderbufferBindingOes, (uint) oldRenderbuffer);
 				throw new InvalidOperationException ("Error with RenderbufferStorage()!");
 			}
 
-			GL.Oes.GenFramebuffers (1, ref _framebuffer);
+			GL.Oes.GenFramebuffers (1, out _framebuffer);
 			GL.Oes.BindFramebuffer (All.FramebufferOes, _framebuffer);
 			GL.Oes.FramebufferRenderbuffer (All.FramebufferOes, All.ColorAttachment0Oes, All.RenderbufferOes, _renderbuffer);
 			if (_depthFormat != 0) {
-				GL.Oes.GenRenderbuffers (1, ref _depthbuffer);
+				GL.Oes.GenRenderbuffers (1, out _depthbuffer);
 				GL.Oes.BindFramebuffer (All.RenderbufferOes, _depthbuffer);
 				GL.Oes.RenderbufferStorage (All.RenderbufferOes, _depthFormat, (int) newSize.Width, (int) newSize.Height);
 				GL.Oes.FramebufferRenderbuffer (All.FramebufferOes, All.DepthAttachmentOes, All.RenderbufferOes, _depthbuffer);
@@ -167,26 +169,26 @@ namespace LowLevelGLPaint
 				_context.MakeCurrent(null);
 
 			int oldRenderbuffer = 0;
-			GL.GetInteger (All.RenderbufferBindingOes, ref oldRenderbuffer);
+			GL.GetInteger (All.RenderbufferBindingOes, out oldRenderbuffer);
 			GL.Oes.BindRenderbuffer (All.RenderbufferOes, _renderbuffer);
 
-			if (!_context.EAGLContext.PresentRenderBuffer ((uint) All.RenderbufferOes))
+			if (!_context.EAGLContext.PresentRenderBuffer ((nuint)(uint) All.RenderbufferOes))
 				Console.WriteLine ("Failed to swap renderbuffer!");
 
 			EAGLContext.SetCurrentContext (oldContext);
 		}
 
-		public PointF ConvertPointFromViewToSurface (PointF point)
+		public CGPoint ConvertPointFromViewToSurface (CGPoint point)
 		{
 			var bounds = Bounds;
-			return new PointF ((point.X - bounds.X) / bounds.Width * _size.Width,
+			return new CGPoint ((point.X - bounds.X) / bounds.Width * _size.Width,
 					(point.Y - bounds.Y) / bounds.Height * _size.Height);
 		}
 
-		public RectangleF ConvertRectFromViewToSurface (RectangleF rect)
+		public CGRect ConvertRectFromViewToSurface (CGRect rect)
 		{
 			var bounds = Bounds;
-			return new RectangleF (
+			return new CGRect (
 					(rect.X - bounds.X) / bounds.Width * _size.Width,
 					(rect.Y - bounds.Y) / bounds.Height * _size.Height,
 					rect.Width / bounds.Width * _size.Width,
