@@ -5,13 +5,13 @@
 // Manual changes to this file will not be maintained.
 //
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using System.CodeDom.Compiler;
 
 namespace ManualStoryboard
 {
-	[Register ("PinkViewController")]
+	[Foundation.Register("PinkViewController")]
 	partial class PinkViewController
 	{
 		void ReleaseDesignerOutlets ()

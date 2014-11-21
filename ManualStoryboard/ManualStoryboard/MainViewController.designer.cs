@@ -5,16 +5,16 @@
 // Manual changes to this file will not be maintained.
 //
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using System.CodeDom.Compiler;
 
 namespace ManualStoryboard
 {
-	[Register ("MainViewController")]
+	[Foundation.Register("MainViewController")]
 	partial class MainViewController
 	{
-		[Outlet]
+		[Foundation.Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIButton PinkButton { get; set; }
 

@@ -1,22 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualStoryboard", "ManualStoryboard\ManualStoryboard.csproj", "{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|iPhoneSimulator = Debug|iPhoneSimulator
-		Release|iPhoneSimulator = Release|iPhoneSimulator
-		Debug|iPhone = Debug|iPhone
-		Release|iPhone = Release|iPhone
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		Ad-Hoc|iPhoneSimulator = Ad-Hoc|iPhoneSimulator
 		AppStore|iPhone = AppStore|iPhone
+		AppStore|iPhoneSimulator = AppStore|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Ad-Hoc|iPhoneSimulator
+		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Ad-Hoc|iPhoneSimulator.Build.0 = Ad-Hoc|iPhoneSimulator
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
+		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Debug|iPhone.Build.0 = Debug|iPhone
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -25,6 +33,9 @@ Global
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Release|iPhone.Build.0 = Release|iPhone
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{E3834E0F-1908-4AEF-88F7-8FB8CE3FEDF4}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ManualStoryboard\ManualStoryboard.csproj
