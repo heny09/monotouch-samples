@@ -26,29 +26,30 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace ImageProtocol
 {
 	public class ImageProtocol : NSUrlProtocol
 	{
-		[Export ("canInitWithRequest:")]
+		[Foundation.Export("canInitWithRequest:")]
 		public static bool canInitWithRequest (NSUrlRequest request)
 		{
 			return request.Url.Scheme == "custom";
 		}
 
-		[Export ("canonicalRequestForRequest:")]
+		[Foundation.Export("canonicalRequestForRequest:")]
 		public static new NSUrlRequest GetCanonicalRequest (NSUrlRequest forRequest)
 		{
 			return forRequest;
 		}
 
-		[Export ("initWithRequest:cachedResponse:client:")]
-		public ImageProtocol (NSUrlRequest request, NSCachedUrlResponse cachedResponse, NSUrlProtocolClient client) 
+        // TODO: NSUrlProtocolClient to INSUrlProtocolClient
+		[Foundation.Export("initWithRequest:cachedResponse:client:")]
+		public ImageProtocol (NSUrlRequest request, NSCachedUrlResponse cachedResponse, INSUrlProtocolClient client) 
 			: base (request, cachedResponse, client)
 		{
 		}
@@ -59,7 +60,7 @@ namespace ImageProtocol
 			using (var image = Render (value)) {
 				using (var response = new NSUrlResponse (Request.Url, "image/jpeg", -1, null)) {
 					Client.ReceivedResponse (this, response, NSUrlCacheStoragePolicy.NotAllowed);
-					this.InvokeOnMainThread (delegate {
+					this.InvokeOnMainThread ((Action)delegate {
 						using (var data = image.AsJPEG ()) {
 							Client.DataLoaded (this, data);
 						}
@@ -76,11 +77,11 @@ namespace ImageProtocol
 		static UIImage Render (string value)
 		{
 			NSString text = new NSString (string.IsNullOrEmpty (value) ? " " : value);
-			UIFont font = UIFont.SystemFontOfSize (20);
-			SizeF size = text.StringSize (font);
-			UIGraphics.BeginImageContextWithOptions (size, false, 0.0f);
+			UIFont font = (UIFont)UIFont.SystemFontOfSize ((nfloat)20);
+			CGSize size = text.StringSize (font);
+			UIGraphics.BeginImageContextWithOptions ((CGSize)size, false, (nfloat)0.0f);
 			UIColor.Red.SetColor ();
-			text.DrawString (new PointF (0, 0), font);
+			text.DrawString (new CGPoint (0, 0), font);
 			UIImage image = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
 			
