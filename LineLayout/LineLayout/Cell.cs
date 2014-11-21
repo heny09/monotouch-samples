@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace LineLayout
 {
@@ -10,13 +10,14 @@ namespace LineLayout
 	{
 		public UILabel Label { get; private set; }
 		
-		[Export("initWithFrame:")]
-		public Cell (RectangleF frame) : base (frame)
+		[Foundation.Export("initWithFrame:")]
+		public Cell (CGRect frame) : base (frame)
 		{   
-			Label = new UILabel (new RectangleF (PointF.Empty, frame.Size)) {
+            // TODO: PointF.Empty to CGPoint.Empty
+			Label = new UILabel (new CGRect (CGPoint.Empty, frame.Size)) {
 				AutoresizingMask = UIViewAutoresizing.FlexibleHeight|UIViewAutoresizing.FlexibleWidth,
 				TextAlignment = UITextAlignment.Center,
-				Font = UIFont.BoldSystemFontOfSize (50f),
+				Font = (UIFont)UIFont.BoldSystemFontOfSize ((nfloat)50f),
 				BackgroundColor = UIColor.UnderPageBackgroundColor,
 				TextColor = UIColor.Black
 			};

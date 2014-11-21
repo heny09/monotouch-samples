@@ -1,11 +1,11 @@
 using System;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace LineLayout
 {
-	[Register ("AppDelegate")]
+	[Foundation.Register("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate
 	{
 		UIWindow window;

@@ -1,7 +1,7 @@
 using System;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace LineLayout
 {
@@ -18,14 +18,14 @@ namespace LineLayout
 			CollectionView.RegisterClassForCell (typeof(Cell), cellToken);
 		}
 
-		public override int GetItemsCount (UICollectionView collectionView, int section)
+		public override nint GetItemsCount (UICollectionView collectionView, nint section)
 		{
-			return 60;
+			return (nint)60;
 		}
 		
 		public override UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath)
 		{
-			Cell cell = (Cell) collectionView.DequeueReusableCell (cellToken, indexPath);
+			Cell cell = (Cell) collectionView.DequeueReusableCell ((NSString)cellToken, (NSIndexPath)indexPath);
 			cell.Label.Text = indexPath.Row.ToString ();
 			return cell;
 		}
