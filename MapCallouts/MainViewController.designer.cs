@@ -4,23 +4,23 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 
 namespace MapCallouts
 {
-	[Register ("MainViewController")]
+	[Foundation.Register("MainViewController")]
 	partial class MainViewController
 	{
-		[Outlet]
-		MonoTouch.MapKit.MKMapView mapView { get; set; }
+		[Foundation.Outlet]
+		MapKit.MKMapView mapView { get; set; }
 
-		[Action ("cityAction:")]
-		partial void cityAction (MonoTouch.Foundation.NSObject sender);
+		[Foundation.Action("cityAction:")]
+		partial void cityAction (Foundation.NSObject sender);
 
-		[Action ("bridgeAction:")]
-		partial void bridgeAction (MonoTouch.Foundation.NSObject sender);
+		[Foundation.Action("bridgeAction:")]
+		partial void bridgeAction (Foundation.NSObject sender);
 
-		[Action ("allAction:")]
-		partial void allAction (MonoTouch.Foundation.NSObject sender);
+		[Foundation.Action("allAction:")]
+		partial void allAction (Foundation.NSObject sender);
 	}
 }

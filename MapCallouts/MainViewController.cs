@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.MapKit;
-using MonoTouch.CoreGraphics;
+using Foundation;
+using UIKit;
+using MapKit;
+using CoreGraphics;
 
 namespace MapCallouts
 {
@@ -79,25 +79,26 @@ namespace MapCallouts
 			}
 		}
 		
-		partial void allAction (MonoTouch.Foundation.NSObject sender)
+		partial void allAction (Foundation.NSObject sender)
 		{
 			GotoLocation ();
 			RemoveAllAnnotations ();
-			mapView.AddAnnotation (mapAnnotations);
+            // TODO: MKMapView.AddAnnotation to .AddAnnotations
+			mapView.AddAnnotations (mapAnnotations);
 		}
 		
-		partial void bridgeAction (MonoTouch.Foundation.NSObject sender)
+		partial void bridgeAction (Foundation.NSObject sender)
 		{
 			GotoLocation ();
 			RemoveAllAnnotations ();
-			mapView.AddAnnotation (mapAnnotations [(int) AnnotationIndex.Bridge]);
+			mapView.AddAnnotation ((MKAnnotation)mapAnnotations [(int) AnnotationIndex.Bridge]);
 		}
 		
-		partial void cityAction (MonoTouch.Foundation.NSObject sender)
+		partial void cityAction (Foundation.NSObject sender)
 		{
 			GotoLocation ();
 			RemoveAllAnnotations ();
-			mapView.AddAnnotation (mapAnnotations [(int) AnnotationIndex.City]);
+			mapView.AddAnnotation ((MKAnnotation)mapAnnotations [(int) AnnotationIndex.City]);
 		}
 		
 		void showDetails ()
@@ -143,19 +144,21 @@ namespace MapCallouts
 					annotationView.CanShowCallout = true;
 					
 					UIImage flagImage = UIImage.FromFile ("flag.png");
-					
-					RectangleF resizeRect = RectangleF.Empty;
+					// TODO: RectangleF.Empty to CFGRect.Empty
+					CGRect resizeRect = CGRect.Empty;
 					
 					resizeRect.Size = flagImage.Size;
-					SizeF maxSize = View.Bounds.Inset (AnnotationPadding, AnnotationPadding).Size;
+					CGSize maxSize = View.Bounds.Inset (AnnotationPadding, AnnotationPadding).Size;
 					maxSize.Height -= NavigationController.NavigationBar.Frame.Size.Height - CalloutHeight;
 					if (resizeRect.Size.Width > maxSize.Width)
-						resizeRect.Size = new SizeF (maxSize.Width, resizeRect.Size.Height / resizeRect.Size.Width * maxSize.Width);
+						resizeRect.Size = new CGSize (maxSize.Width, resizeRect.Size.Height / resizeRect.Size.Width * maxSize.Width);
 					if (resizeRect.Size.Height > maxSize.Height)
-						resizeRect.Size = new SizeF (resizeRect.Size.Width / resizeRect.Size.Height * maxSize.Height, maxSize.Height);
+						resizeRect.Size = new CGSize (resizeRect.Size.Width / resizeRect.Size.Height * maxSize.Height, maxSize.Height);
 				
-					resizeRect.Location = PointF.Empty;
-					UIGraphics.BeginImageContext (resizeRect.Size);
+                    //TODO PointF.Empty to CGPoint.Empty
+					resizeRect.Location = CGPoint.Empty;
+					UIGraphics.BeginImageContext ((CGSize)resizeRect.Size);
+                    // TODO: Removed cast of CGRect to CGPoint
 					flagImage.Draw (resizeRect);
 					
 					UIImage resizedImage = UIGraphics.GetImageFromCurrentImageContext ();
