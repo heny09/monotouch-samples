@@ -1,13 +1,13 @@
 using System;
 using OpenTK.Platform.iPhoneOS;
 using OpenTK.Graphics.ES11;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using System.Drawing;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.OpenGLES;
+using UIKit;
+using Foundation;
+using CoreGraphics;
+using ObjCRuntime;
+using OpenGLES;
 using System.Runtime.InteropServices;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
 
 namespace GLPaintGameView
 {
@@ -22,16 +22,16 @@ namespace GLPaintGameView
 		uint brushTexture, drawingTexture, drawingFramebuffer;
 		bool firstTouch;
 
-		PointF Location;
-		PointF PreviousLocation;
+		CGPoint Location;
+		CGPoint PreviousLocation;
 		
-		[Export ("layerClass")]
+		[Foundation.Export("layerClass")]
 		public static Class LayerClass ()
 		{
 			return iPhoneOSGameView.GetLayerClass ();
 		}
 
-		public PaintingView (RectangleF frame)
+		public PaintingView (CGRect frame)
 			: base (frame)
 		{
 			LayerRetainsBacking = true;
@@ -41,19 +41,20 @@ namespace GLPaintGameView
 			MakeCurrent();
 
 			var brushImage = UIImage.FromFile ("Particle.png").CGImage;
-			var width = brushImage.Width;
-			var height = brushImage.Height;
+            // TODO: Cast nint to int
+			int width = (int)brushImage.Width;
+			int height = (int)brushImage.Height;
 			if (brushImage != null) {
-				IntPtr brushData = Marshal.AllocHGlobal (width * height * 4);
+				IntPtr brushData = Marshal.AllocHGlobal ((int)(width * height) * 4);
 				if (brushData == IntPtr.Zero)
 					throw new OutOfMemoryException ();
 				try {
 					using (var brushContext = new CGBitmapContext (brushData,
 							width, width, 8, width * 4, brushImage.ColorSpace, CGImageAlphaInfo.PremultipliedLast)) {
-						brushContext.DrawImage (new RectangleF (0.0f, 0.0f, (float) width, (float) height), brushImage);
+						brushContext.DrawImage ((CGRect)new CGRect (0.0f, 0.0f, (float) width, (float) height), (CGImage)brushImage);
 					}
-
-					GL.GenTextures (1, ref brushTexture);
+                    // TODO: Changed GL.GenTextures(int, ref uint) to GL.GenTextures(int, ou uint)
+					GL.GenTextures (1, out brushTexture);
 					GL.BindTexture (All.Texture2D, brushTexture);
 					GL.TexImage2D (All.Texture2D, 0, (int) All.Rgba, width, height, 0, All.Rgba, All.UnsignedByte, brushData);
 				}
@@ -67,7 +68,8 @@ namespace GLPaintGameView
 			}
 			GL.Disable (All.Dither);
 			GL.MatrixMode (All.Projection);
-			GL.Ortho (0, frame.Width, 0, frame.Height, -1, 1);
+            // TODO: Cast nfloat to float
+			GL.Ortho (0, (float)frame.Width, 0, (float)frame.Height, -1, 1);
 			GL.MatrixMode (All.Modelview);
 			GL.Enable (All.Texture2D);
 			GL.EnableClientState (All.VertexArray);
@@ -98,7 +100,7 @@ namespace GLPaintGameView
 		float[] vertexBuffer;
 		int vertexMax = 64;
 
-		private void RenderLineFromPoint (PointF start, PointF end)
+		private void RenderLineFromPoint (CGPoint start, CGPoint end)
 		{
 			int vertexCount = 0;
 			if (vertexBuffer == null) {
@@ -111,8 +113,9 @@ namespace GLPaintGameView
 					vertexMax *= 2;
 					Array.Resize (ref vertexBuffer, vertexMax * 2);
 				}
-				vertexBuffer [2 * vertexCount + 0] = start.X + (end.X - start.X) * (float) i / (float) count;
-				vertexBuffer [2 * vertexCount + 1] = start.Y + (end.Y - start.Y) * (float) i / (float) count;
+                // TODO: Cast nfloat to float
+				vertexBuffer [2 * vertexCount + 0] = (float)(start.X + (end.X - start.X) * (float) i / (float) count);
+				vertexBuffer [2 * vertexCount + 1] = (float)(start.Y + (end.Y - start.Y) * (float) i / (float) count);
 			}
 			GL.VertexPointer (2, All.Float, 0, vertexBuffer);
 			GL.DrawArrays (All.Points, 0, vertexCount);
@@ -122,10 +125,10 @@ namespace GLPaintGameView
 
 		int dataofs = 0;
 
-		[Export ("playback")]
+		[Foundation.Export("playback")]
 		void Playback ()
 		{
-			PointF [] points = ShakeMe.Data [dataofs];
+			CGPoint [] points = ShakeMe.Data [dataofs];
 
 			for (int i = 0; i < points.Length - 1; i++)
 				RenderLineFromPoint (points [i], points [i + 1]);
@@ -136,47 +139,47 @@ namespace GLPaintGameView
 			}
 		}
 
-		public override void TouchesBegan (MonoTouch.Foundation.NSSet touches, MonoTouch.UIKit.UIEvent e)
+		public override void TouchesBegan (Foundation.NSSet touches, UIKit.UIEvent e)
 		{
 			var bounds = Bounds;
 			var touch = (UITouch) e.TouchesForView (this).AnyObject;
 			firstTouch = true;
-			Location = touch.LocationInView (this);
+			Location = (CGPoint)touch.LocationInView ((UIView)this);
 			Location.Y = bounds.Height - Location.Y;
 		}
 
-		public override void TouchesMoved (MonoTouch.Foundation.NSSet touches, MonoTouch.UIKit.UIEvent e)
+		public override void TouchesMoved (Foundation.NSSet touches, UIKit.UIEvent e)
 		{
 			var bounds = Bounds;
 			var touch = (UITouch) e.TouchesForView (this).AnyObject;
 
 			if (firstTouch) {
 				firstTouch = false;
-				PreviousLocation = touch.PreviousLocationInView (this);
+				PreviousLocation = (CGPoint)touch.PreviousLocationInView ((UIView)this);
 				PreviousLocation.Y = bounds.Height - PreviousLocation.Y;
 			}
 			else {
-				Location = touch.LocationInView (this);
+				Location = (CGPoint)touch.LocationInView ((UIView)this);
 				Location.Y = bounds.Height - Location.Y;
-				PreviousLocation = touch.PreviousLocationInView (this);
+				PreviousLocation = (CGPoint)touch.PreviousLocationInView ((UIView)this);
 				PreviousLocation.Y = bounds.Height - PreviousLocation.Y;
 			}
 			RenderLineFromPoint (PreviousLocation, Location);
 		}
 
-		public override void TouchesEnded (MonoTouch.Foundation.NSSet touches, MonoTouch.UIKit.UIEvent e)
+		public override void TouchesEnded (Foundation.NSSet touches, UIKit.UIEvent e)
 		{
 			var bounds = Bounds;
 			var touch = (UITouch) e.TouchesForView (this).AnyObject;
 			if (firstTouch) {
 				firstTouch = false;
-				PreviousLocation = touch.PreviousLocationInView (this);
+				PreviousLocation = (CGPoint)touch.PreviousLocationInView ((UIView)this);
 				PreviousLocation.Y = bounds.Height - PreviousLocation.Y;
 				RenderLineFromPoint (PreviousLocation, Location);
 			}
 		}
 
-		public override void TouchesCancelled (MonoTouch.Foundation.NSSet touches, MonoTouch.UIKit.UIEvent e)
+		public override void TouchesCancelled (Foundation.NSSet touches, UIKit.UIEvent e)
 		{
 		}
 	}
