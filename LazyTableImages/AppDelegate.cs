@@ -27,8 +27,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using System.Net;
 using System.Collections.ObjectModel;
 
@@ -39,7 +39,7 @@ namespace LazyTableImages {
 	/// application events from iOS.
 	/// </summary>
 
-	[Register ("AppDelegate")]
+	[Foundation.Register("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate {
 		
 		static readonly Uri RssFeedUrl = new Uri ("http://phobos.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/toppaidapplications/limit=75/xml");

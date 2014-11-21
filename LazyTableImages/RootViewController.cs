@@ -25,10 +25,10 @@
 // THE SOFTWARE.
 
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Net;
@@ -95,18 +95,18 @@ namespace LazyTableImages {
 				Controller.TableView.ReloadData ();
 			}
 			
-			public override int NumberOfSections (UITableView tableView)
+			public override nint NumberOfSections (UITableView tableView)
 			{
-				return 1;
+				return (nint)1;
 			}
 			
-			public override int RowsInSection (UITableView tableview, int section)
+			public override nint RowsInSection (UITableView tableview, nint section)
 			{
-				return Controller.Apps.Count;
+				return (nint)Controller.Apps.Count;
 			}
 			
 			// Customize the appearance of table view cells.
-			public override UITableViewCell GetCell (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+			public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
 			{
 				UITableViewCell cell;
 				// If the list is empty, put in a 'loading' entry
@@ -167,7 +167,7 @@ namespace LazyTableImages {
 				// to be run on the main UI thread. This allows us to safely access the UI.
 				DownloadTask = DownloadTask.ContinueWith (t => {
 					// Load the image from the byte array.
-					app.Image = UIImage.LoadFromData (NSData.FromArray (data));
+					app.Image = (UIImage)UIImage.LoadFromData (NSData.FromArray (data));
 					
 					// Retrieve the cell which corresponds to the current App. If the cell is null, it means the user
 					// has already scrolled that app off-screen.
