@@ -2,14 +2,14 @@
 // kvo: Shows how to observe property changes on an object
 //
 using System;
-using System.Drawing;
+using CoreGraphics;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace kvo
 {
-	[Register ("AppDelegate")]
+	[Foundation.Register("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate
 	{
 		UINavigationController topController;
@@ -61,7 +61,7 @@ namespace kvo
 			label.Frame = ComputeLabelRect ();
 		}
 		
-		RectangleF ComputeLabelRect ()
+		CGRect ComputeLabelRect ()
 		{
 			var rect = topController.View.Bounds;
 			rect.Inflate (-20, -80);
