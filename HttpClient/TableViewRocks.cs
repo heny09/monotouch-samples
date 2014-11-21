@@ -1,7 +1,7 @@
 
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 
 namespace HttpClient
 {
@@ -28,14 +28,14 @@ namespace HttpClient
 			}
 		}
 		
-		public override int NumberOfSections (UITableView tableView)
+		public override nint NumberOfSections (UITableView tableView)
 		{
-			return 1;
+			return (nint)1;
 		}
 		
-		public override int RowsInSection (UITableView tableView, int section)
+		public override nint RowsInSection (UITableView tableView, nint section)
 		{
-			return source.Length;
+			return (nint)source.Length;
 		}
 		
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
@@ -62,7 +62,7 @@ namespace HttpClient
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
-			tableView.CellAt (NSIndexPath.FromRowSection (selected, 0)).Accessory = UITableViewCellAccessory.None;
+			tableView.CellAt ((NSIndexPath)NSIndexPath.FromRowSection ((nint)selected, (nint)0)).Accessory = UITableViewCellAccessory.None;
 			selected = indexPath.Row;
 			tableView.CellAt (indexPath).Accessory = UITableViewCellAccessory.Checkmark;
 			tableView.DeselectRow (indexPath, true);
@@ -76,7 +76,7 @@ namespace HttpClient
 		{
 			tableView.DataSource = new StringDataSource (tableView, choices);
 			tableView.Delegate = new StringDelegate ();
-			tableView.SelectRow (NSIndexPath.FromRowSection (0, 0), true, UITableViewScrollPosition.None);
+			tableView.SelectRow ((NSIndexPath)NSIndexPath.FromRowSection ((nint)0, (nint)0), true, UITableViewScrollPosition.None);
 		}
 		
 		public static int SelectedRow (this UITableView tableView)
